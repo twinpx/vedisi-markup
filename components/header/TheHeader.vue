@@ -1,15 +1,23 @@
 <template>
   <header>
-    <img
-      src="~assets/Logo.svg"
-      width="136"
-      alt="Проверка подписи"
-      class="header-logo"
-    />
-    <div class="header-statistics">
-      <div class="header-statistics__num">256</div>
-      <div class="header-statistics__text">документов<br />проверили</div>
+    <header-logo></header-logo>
+
+    <div class="header-middle">
+      <header-statistics v-if="!$store.state.result.PDF"></header-statistics>
+
+      <div class="header-file" v-else>
+        <span class="header-file__filename">{{
+          $store.state.result.PDF.filename
+        }}</span>
+        <button
+          class="button button-success button--small"
+          @click.prevent="newUpload()"
+        >
+          Проверить еще
+        </button>
+      </div>
     </div>
+
     <div class="header-menu">
       <NuxtLink to="/about">О проекте</NuxtLink>
     </div>
@@ -27,7 +35,22 @@
 </template>
 
 <script>
-export default {};
+import HeaderStatistics from "./TheHeaderStatisctics.vue";
+import HeaderLogo from "./TheHeaderLogo.vue";
+
+export default {
+  methods: {
+    newUpload() {
+      this.$store.commit("changeResult", {});
+      this.$store.commit("changeUploadStatus", "form");
+      //this.$refs.pdfFile.files.length = 0;
+    }
+  },
+  components: {
+    HeaderStatistics,
+    HeaderLogo
+  }
+};
 </script>
 
 <style>
@@ -37,17 +60,14 @@ header {
   justify-content: space-between;
   align-items: center;
   height: 100px;
-  padding: 0 25px;
 }
-.header-logo {
-  position: relative;
-  z-index: 11;
+.header-middle {
+  width: 50%;
 }
 .header-statistics {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 50%;
 }
 .header-statistics__num {
   font-size: 1.5rem;
@@ -56,6 +76,18 @@ header {
 }
 .header-statistics__text {
   font-size: 0.7rem;
+}
+.header-file {
+  text-align: center;
+  vertical-align: middle;
+}
+.header-file__filename {
+  font-size: 0.9rem;
+  margin-right: 20px;
+  display: inline-block;
+}
+.header-file .button {
+  min-width: 136px;
 }
 .header-menu a,
 .header-menu a:hover,
