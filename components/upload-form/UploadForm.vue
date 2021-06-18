@@ -10,7 +10,7 @@
       <NuxtLink to="/conditions">Условия использования</NuxtLink>
     </div>
     <form action="" method="POST">
-      <div class="upload-form-control">
+      <div class="upload-form-control" @drop.prevent="drop()">
         <input
           type="file"
           name="pdfFile"
@@ -22,13 +22,15 @@
           class="upload-form-button"
           v-if="$store.state.uploadStatus === 'form'"
         >
-          <div class="upload-from-control__error" v-text="error"></div>
+          <div class="upload-form-control__error" v-text="error"></div>
 
           <div class="input-file">
             <label for="pdfFile" class="button button--large"
               >Выберите PDF-файл</label
             >
           </div>
+
+          <div class="upload-form__dragndrop" ref="dragndrop"></div>
 
           <span>или перетащите его в область</span>
         </div>
@@ -77,10 +79,14 @@ export default {
   data() {
     return {
       error: "",
-      controller: null
+      controller: null,
+      isAdvancedUpload: false
     };
   },
   methods: {
+    drop() {
+      console.log("sdf");
+    },
     uploadFile() {
       //if size is acceptable
       if (this.$refs.pdfFile.files[0].size >= 1e7) {
@@ -176,6 +182,53 @@ export default {
 
       return;
     }
+  },
+  mounted() {
+    this.isAdvancedUpload = (() => {
+      let div = document.createElement("div");
+      return (
+        ("draggable" in div || ("ondragstart" in div && "ondrop" in div)) &&
+        "FormData" in window &&
+        "FileReader" in window
+      );
+    })();
+
+    if (this.isAdvancedUpload) {
+      document.addEventListener(
+        "drop",
+        function(event) {
+          // prevent default action (open as link for some elements)
+          event.preventDefault();
+          // move dragged elem to the selected drop target
+          console.log("dragndrop");
+          /*if (event.target.className == "dropzone") {
+            event.target.style.background = "";
+            dragged.parentNode.removeChild(dragged);
+            event.target.appendChild(dragged);
+          }*/
+        },
+        false
+      );
+      /*let droppedFiles = false;
+
+      $form
+        .on(
+          "drag dragstart dragend dragover dragenter dragleave drop",
+          function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        )
+        .on("dragover dragenter", function() {
+          $form.addClass("is-dragover");
+        })
+        .on("dragleave dragend drop", function() {
+          $form.removeClass("is-dragover");
+        })
+        .on("drop", function(e) {
+          droppedFiles = e.originalEvent.dataTransfer.files;
+        });*/
+    }
   }
 };
 </script>
@@ -226,7 +279,7 @@ h1 {
   box-shadow: 0px 5px 50px #fede004d;
   min-height: 300px;
 }
-.upload-from-control__error {
+.upload-form-control__error {
   margin-bottom: 50px;
   font-size: 0.9rem;
   color: #e43d40;
@@ -243,6 +296,13 @@ h1 {
   display: block;
   width: 300px;
   margin: 0 auto 50px;
+}
+.upload-form__dragndrop {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 25px;
+  background: url("~/assets/icon-dragndrop.svg") no-repeat center;
+  background-size: contain;
 }
 /*Confirmation*/
 .upload-form-comfirmation__text {
