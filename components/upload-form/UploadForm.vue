@@ -169,6 +169,7 @@ export default {
           //Обработка через try
           let json = await response.json();
           this.$store.commit("changeResult", json);
+          this.$store.commit("changeUploadStatus", "success");
           break;
         }
       } while (true);

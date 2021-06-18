@@ -1,36 +1,17 @@
 <template>
   <div class="table">
-    <div class="table-check-items">
-      <check-type
-        v-for="item in checkTypeItems"
+    <div
+      v-for="type in itemsType"
+      :key="type"
+      :class="'table-' + type + '-items'"
+    >
+      <component
+        :is="type + '-type'"
+        v-for="item in $store.state.resultTitle[type + 'Type']"
         :key="item.code"
         :item="item"
         :signature="signature"
-      ></check-type>
-    </div>
-    <div class="table-data-items">
-      <data-type
-        v-for="item in dataTypeItems"
-        :key="item.code"
-        :item="item"
-        :signature="signature"
-      ></data-type>
-    </div>
-    <div class="table-person-items">
-      <person-type
-        v-for="item in personTypeItems"
-        :key="item.code"
-        :item="item"
-        :signature="signature"
-      ></person-type>
-    </div>
-    <div class="table-other-items">
-      <other-type
-        v-for="item in otherTypeItems"
-        :key="item.code"
-        :item="item"
-        :signature="signature"
-      ></other-type>
+      ></component>
     </div>
   </div>
 </template>
@@ -44,10 +25,7 @@ import OtherType from "./SignatureResultTableItemOtherType.vue";
 export default {
   data() {
     return {
-      checkTypeItems: this.$store.state.resultTitle.checkType,
-      dataTypeItems: this.$store.state.resultTitle.dataType,
-      personTypeItems: this.$store.state.resultTitle.personType,
-      otherTypeItems: this.$store.state.resultTitle.otherType
+      itemsType: ["check", "data", "person", "other"]
     };
   },
   props: {

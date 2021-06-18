@@ -1,5 +1,14 @@
 <template>
-  <div class="header-logo">
+  <div
+    class="header-logo"
+    :class="
+      $store.state.uploadStatus !== 'form' &&
+      $store.state.uploadStatus !== 'uploading'
+        ? 'header-logo--hoverable'
+        : ''
+    "
+    @click.prevent="clickLogo()"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="37.173"
@@ -125,10 +134,30 @@
   </div>
 </template>
 
+<script>
+export default {
+  methods: {
+    clickLogo() {
+      console.log(this.$store.state.uploadStatus);
+      if (
+        this.$store.state.uploadStatus !== "form" &&
+        this.$store.state.uploadStatus !== "uploading"
+      ) {
+        this.$store.commit("changeResult", {});
+        this.$store.commit("changeUploadStatus", "form");
+      }
+    }
+  }
+};
+</script>
+
 <style>
 .header-logo {
   position: relative;
   z-index: 11;
+}
+.header-logo--hoverable {
+  cursor: pointer;
 }
 .header-logo-icon {
   margin-right: 12px;

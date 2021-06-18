@@ -1,5 +1,8 @@
 <template>
-  <div class="table-item table-item--person">
+  <div
+    class="table-item table-item--person"
+    v-if="signature[item.code] !== null"
+  >
     <span>{{ item.text }}</span>
     <span>{{ value }}</span>
   </div>

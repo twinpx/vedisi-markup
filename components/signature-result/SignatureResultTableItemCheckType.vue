@@ -1,5 +1,5 @@
 <template>
-  <div class="table-item">
+  <div class="table-item" v-if="signature[item.code] !== null">
     <span
       >{{ item.text }}
       <span v-if="!value">не</span>
