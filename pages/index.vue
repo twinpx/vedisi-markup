@@ -1,7 +1,12 @@
 <template>
   <div>
-    <upload-form v-if="!$store.state.result.signatures"></upload-form>
-    <signature-result v-else></signature-result>
+    <signature-result
+      v-if="
+        $store.state.uploadStatus === 'success' &&
+          $store.state.result.signatures
+      "
+    ></signature-result>
+    <upload-form v-else></upload-form>
   </div>
 </template>
 

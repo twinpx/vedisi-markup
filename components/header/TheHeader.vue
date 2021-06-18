@@ -3,19 +3,9 @@
     <header-logo></header-logo>
 
     <div class="header-middle">
-      <header-statistics v-if="!$store.state.result.PDF"></header-statistics>
-
-      <div class="header-file" v-else>
-        <span class="header-file__filename">{{
-          $store.state.result.PDF.filename
-        }}</span>
-        <button
-          class="button button-success button--small"
-          @click.prevent="newUpload()"
-        >
-          Проверить еще
-        </button>
-      </div>
+      <header-statistics
+        v-if="!$store.state.uploadStatus === 'success'"
+      ></header-statistics>
     </div>
 
     <div class="header-menu">
@@ -39,13 +29,6 @@ import HeaderStatistics from "./TheHeaderStatisctics.vue";
 import HeaderLogo from "./TheHeaderLogo.vue";
 
 export default {
-  methods: {
-    newUpload() {
-      this.$store.commit("changeResult", {});
-      this.$store.commit("changeUploadStatus", "form");
-      //this.$refs.pdfFile.files.length = 0;
-    }
-  },
   components: {
     HeaderStatistics,
     HeaderLogo
@@ -76,18 +59,6 @@ header {
 }
 .header-statistics__text {
   font-size: 0.7rem;
-}
-.header-file {
-  text-align: center;
-  vertical-align: middle;
-}
-.header-file__filename {
-  font-size: 0.9rem;
-  margin-right: 20px;
-  display: inline-block;
-}
-.header-file .button {
-  min-width: 136px;
 }
 .header-menu a,
 .header-menu a:hover,

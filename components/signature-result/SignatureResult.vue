@@ -1,5 +1,6 @@
 <template>
   <div>
+    <signature-result-info></signature-result-info>
     <div
       v-for="(signature, index) in $store.state.result.signatures"
       :key="signature.signatureName"
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import SignatureResultInfo from "./SignatureResultInfo.vue";
 import SignatureResultSuccess from "./SignatureResultSuccess.vue";
 import SignatureResultError from "./SignatureResultError.vue";
 
@@ -29,6 +31,7 @@ export default {
     signature: Object
   },
   components: {
+    SignatureResultInfo,
     SignatureResultSuccess,
     SignatureResultError
   },

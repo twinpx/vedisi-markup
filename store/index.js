@@ -68,11 +68,15 @@ export const state = () => ({
       },
       {
         code: "sigDate",
-        text: "Дата подписи из PDF:"
+        text: "Дата подписи из PDF:",
+        muted: true,
+        notice: "Пояснение о том, для чего нужна сноска."
       },
       {
         code: "signingTime",
-        text: "Дата подписи из самой подписи:"
+        text: "Дата подписи из самой подписи:",
+        muted: true,
+        notice: "Пояснение о том, для чего нужна сноска."
       },
       {
         code: "signingTimestamp",
@@ -95,11 +99,12 @@ export const state = () => ({
       {
         code: "subjectEmail",
         text: "Электронный адрес"
-      }
-      /*{
+      },
+      {
         code: "subject",
-        text: "Дополнительные данные сертификата"
-      }*/
+        text: "Дополнительные данные сертификата",
+        dropdown: true
+      }
     ],
     otherType: [
       {

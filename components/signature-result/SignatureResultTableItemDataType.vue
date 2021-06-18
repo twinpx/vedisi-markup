@@ -1,11 +1,20 @@
 <template>
-  <div class="table-item" v-if="signature[item.code] !== null">
+  <div
+    class="table-item"
+    :class="item.muted ? 'table-item--muted' : ''"
+    v-if="signature[item.code] !== null"
+  >
     <span>{{ item.text }}</span>
-    <span>{{ value }}</span>
+    <span>
+      {{ value }}
+      <the-notice v-if="item.notice" :text="item.notice"></the-notice>
+    </span>
   </div>
 </template>
 
 <script>
+import TheNotice from "../TheNotice.vue";
+
 export default {
   data() {
     return {};
@@ -26,7 +35,8 @@ export default {
         return result;
       }
     }
-  }
+  },
+  components: { TheNotice }
 };
 </script>
 
@@ -40,5 +50,11 @@ export default {
 }
 .table-item span:nth-of-type(2) {
   color: #495668;
+}
+.table-item.table-item--muted span:nth-of-type(2) {
+  color: #fabec0;
+}
+.table-item .notice {
+  margin-left: 15px;
 }
 </style>
