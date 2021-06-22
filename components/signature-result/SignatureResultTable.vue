@@ -20,18 +20,17 @@
 import CheckType from "./SignatureResultTableItemCheckType.vue";
 import DataType from "./SignatureResultTableItemDataType.vue";
 import PersonType from "./SignatureResultTableItemPersonType.vue";
-import OtherType from "./SignatureResultTableItemOtherType.vue";
 
 export default {
   data() {
     return {
-      itemsType: ["check", "data", "person", "other"]
+      itemsType: ["check", "data", "person"]
     };
   },
   props: {
     signature: Object
   },
-  components: { CheckType, DataType, PersonType, OtherType }
+  components: { CheckType, DataType, PersonType }
 };
 </script>
 
@@ -47,12 +46,19 @@ export default {
 }
 .table-check-items,
 .table-data-items,
-.table-person-items,
-.table-other-items {
+.table-person-items {
   margin-bottom: 50px;
   border-top: 1px solid #efefef;
 }
-.table-other-items {
+.table-person-items {
   margin-bottom: 30px;
+}
+@media (max-width: 575px) {
+  .table {
+    margin: 0 -20px;
+    width: calc(100% + 40px);
+    padding: 40px 20px;
+    box-shadow: none;
+  }
 }
 </style>

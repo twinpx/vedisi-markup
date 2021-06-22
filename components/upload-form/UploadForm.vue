@@ -30,9 +30,9 @@
             >
           </div>
 
-          <div class="upload-form__dragndrop" ref="dragndrop"></div>
-
-          <span>или перетащите его в область</span>
+          <div class="upload-form__dragndrop" ref="dragndrop">
+            <span>или перетащите его в область</span>
+          </div>
         </div>
 
         <div
@@ -40,7 +40,8 @@
           v-if="$store.state.uploadStatus === 'confirmation'"
         >
           <div class="upload-form-comfirmation__text">
-            Мы обрабатываем, но не храним<br />персональные данные.
+            Информируем вас о том,<br />что мы обрабатываем, но не храним и не
+            передаём персональные данные.<br />Вы даёте своё согласие?
           </div>
           <label class="button-checkbox button button--success button--middle">
             <input type="checkbox" @change="confirm()" />
@@ -59,7 +60,7 @@
           v-if="$store.state.uploadStatus === 'uploading'"
         >
           <div class="upload-form-comfirmation__text">
-            Идет проверка документа,<br />подождите, пожалуйста
+            Идет проверка документа,<br />подождите, пожалуйста.
           </div>
           <div class="upload-form-confirmation__preloader"></div>
           <button
@@ -80,6 +81,7 @@ export default {
     return {
       error: "",
       controller: null,
+      controllerAborted: false,
       isAdvancedUpload: false
     };
   },
@@ -90,11 +92,24 @@ export default {
     uploadFile() {
       //if size is acceptable
       if (this.$refs.pdfFile.files[0].size >= 1e7) {
-        this.error = "Вес файла превышает 10Мб";
+        this.error =
+          "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт.";
         return;
       } else {
         this.error = "";
       }
+
+      //if the file extention is not pdf
+      const filename = this.$refs.pdfFile.files[0].name;
+      const lastIndex = filename.lastIndexOf(".");
+
+      if (filename.substring(lastIndex + 1) !== "pdf") {
+        this.error = "Сервис поддерживает только проверку файлов PDF.";
+        return;
+      } else {
+        this.error = "";
+      }
+
       this.$store.commit("changeUploadStatus", "confirmation");
     },
     confirm() {
@@ -106,6 +121,7 @@ export default {
     },
     refuseUploading() {
       this.controller.abort();
+      this.controllerAborted = true;
       this.$store.commit("changeUploadStatus", "form");
     },
     async sendFile() {
@@ -138,7 +154,10 @@ export default {
         });
         result = await response.json();
       } catch (err) {
-        this.error = "Произошла ошибка, попробуйте снова.";
+        if (!this.controllerAborted) {
+          this.error = "Произошла ошибка, попробуйте снова.";
+        }
+        this.controllerAborted = false;
         return;
       }
 
@@ -146,7 +165,10 @@ export default {
       let uuid;
 
       if (result.status != 200) {
-        this.error = "Произошла ошибка, попробуйте снова.";
+        if (!this.controllerAborted) {
+          this.error = "Произошла ошибка, попробуйте снова.";
+        }
+        this.controllerAborted = false;
         return;
       } else {
         uuid = result.uuid;
@@ -162,14 +184,20 @@ export default {
             method: "GET"
           });
         } catch (err) {
-          this.error = "Произошла ошибка, попробуйте снова.";
+          if (!this.controllerAborted) {
+            this.error = "Произошла ошибка, попробуйте снова.";
+          }
+          this.controllerAborted = false;
           return;
         }
 
         if (response.status == 204) {
           await new Promise(r => setTimeout(r, 1000));
         } else if (response.status != 200) {
-          this.error = "Произошла ошибка, попробуйте снова.";
+          if (!this.controllerAborted) {
+            this.error = "Произошла ошибка, попробуйте снова.";
+          }
+          this.controllerAborted = false;
           return;
         } else {
           //Обработка через try
@@ -365,18 +393,20 @@ label.button-checkbox span::after {
 
 @media (max-width: 767px) {
   .content-body {
-    padding: 40px 50px;
+    padding: 40px 20px;
     border-radius: 20px;
+    background-position: 0 0;
+    background-size: 400%;
   }
   h1 {
     font-size: 1.5rem;
     margin: 0 0 40px;
   }
-  .upload-form {
+  .content-body--form {
     margin-bottom: 200px;
     position: relative;
   }
-  .upload-form p {
+  .content-body--form p {
     width: auto;
     margin: 0 0 40px;
   }
@@ -396,6 +426,9 @@ label.button-checkbox span::after {
     left: 0;
     width: 100%;
     min-width: 100%;
+  }
+  .upload-form__dragndrop {
+    display: none;
   }
 }
 @keyframes rotate {

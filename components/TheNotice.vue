@@ -68,4 +68,13 @@ export default {
   border-width: 19px 9.5px 0 9.5px;
   border-color: #ffffff transparent transparent transparent;
 }
+@media (max-width: 575px) {
+  .notice-text {
+    right: 0;
+    width: auto;
+  }
+  .notice-text::after {
+    display: none;
+  }
+}
 </style>

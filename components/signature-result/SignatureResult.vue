@@ -1,6 +1,7 @@
 <template>
   <div>
     <signature-result-info></signature-result-info>
+
     <div
       v-for="(signature, index) in $store.state.result.signatures"
       :key="signature.signatureName"

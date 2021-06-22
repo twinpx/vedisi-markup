@@ -36,6 +36,9 @@ export default {
 }
 .table-item span:nth-of-type(2) {
   color: #495668;
+  text-align: right;
+  word-break: break-word;
+  margin-left: 15px;
 }
 .table-item .icon-success {
   width: 24px;
@@ -56,5 +59,24 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+}
+@media (max-width: 575px) {
+  .table-item {
+    display: block;
+  }
+  .table-item span {
+    display: block;
+    text-align: center;
+  }
+  .table-item > span:first-child {
+    margin-bottom: 10px;
+  }
+  .table-item > span:nth-of-type(2) {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  .table-item .notice {
+    margin: 10px 0 0;
+  }
 }
 </style>

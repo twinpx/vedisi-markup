@@ -7,7 +7,7 @@
       'table-item--open': open
     }"
   >
-    <span>{{ item.text }}</span>
+    <span>{{ item.text }}:</span>
 
     <span
       v-if="item.dropdown"
@@ -15,6 +15,12 @@
       class="table-item__dropdown-icon"
       >></span
     >
+    <span v-else-if="item.code === 'subjectName'">
+      <a :download="signature.certThumbprint + '.cer'" :href="href">
+        {{ value }}
+      </a>
+    </span>
+
     <span v-else>{{ value }}</span>
 
     <div v-if="item.dropdown" class="table-item__dropdown">
@@ -35,10 +41,19 @@ export default {
     signature: Object
   },
   computed: {
+    href() {
+      let base64Data = this.signature.certificate;
+      let blob = new Blob([base64Data]);
+      return URL.createObjectURL(blob);
+    },
     value() {
       let code = this.item.code; //fromPDF
       let result = this.signature[code]; //true
       let v = this.item.value; //{}
+
+      if (code === "certNotBefore") {
+        return `с ${result} по ${this.signature[this.item.after]}`;
+      }
 
       if (v && v[result]) {
         return v[result];
@@ -64,6 +79,9 @@ export default {
 }
 .table-item span:nth-of-type(2) {
   color: #495668;
+  text-align: right;
+  word-break: break-word;
+  margin-left: 15px;
 }
 .table-item__dropdown {
   width: 100%;
@@ -86,5 +104,24 @@ export default {
 .table-item--open .table-item__dropdown {
   height: 100px;
   opacity: 1;
+}
+@media (max-width: 575px) {
+  .table-item {
+    display: block;
+  }
+  .table-item span {
+    display: block;
+    text-align: center;
+  }
+  .table-item > span:first-child {
+    margin-bottom: 10px;
+  }
+  .table-item > span:nth-of-type(2) {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  .table-item .notice {
+    margin: 10px 0 0;
+  }
 }
 </style>

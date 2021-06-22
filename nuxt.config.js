@@ -7,9 +7,9 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "check-sign",
+    title: "Проверка электронной подписи",
     htmlAttrs: {
-      lang: "en"
+      lang: "ru"
     },
     meta: [
       { charset: "utf-8" },

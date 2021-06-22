@@ -4,15 +4,15 @@
 
     <div class="header-middle">
       <header-statistics
-        v-if="!$store.state.uploadStatus === 'success'"
+        v-if="$store.state.uploadStatus !== 'success'"
       ></header-statistics>
     </div>
 
     <div class="header-menu">
       <NuxtLink to="/about">О проекте</NuxtLink>
     </div>
-    <div class="header-mobile-menu">
-      <i></i>
+    <div class="header-mobile-menu" :class="{ open: menuOpen }">
+      <i @click="menuOpen = !menuOpen"></i>
       <div class="header-mobile-menu__wrapper">
         <div class="header-mobile-menu__bg">
           <div>
@@ -29,6 +29,11 @@ import HeaderStatistics from "./TheHeaderStatisctics.vue";
 import HeaderLogo from "./TheHeaderLogo.vue";
 
 export default {
+  data() {
+    return {
+      menuOpen: false
+    };
+  },
   components: {
     HeaderStatistics,
     HeaderLogo
@@ -68,7 +73,7 @@ header {
 .header-mobile-menu {
   display: none;
 }
-@media (max-width: 767px) {
+@media (max-width: 575px) {
   .header-statistics,
   .header-menu {
     display: none;
@@ -95,16 +100,18 @@ header {
     z-index: 10;
   }
   .header-mobile-menu__bg {
-    position: absolute;
-    top: 0;
-    left: -30px;
+    margin-left: -30px;
     width: calc(100vw + 60px);
     background-color: #fff;
     border-radius: 50% / 0 0 100% 100%;
     text-align: center;
     padding-bottom: 120px;
     font-size: 1.5rem;
-    z-index: 11;
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+    transition: transform 0.5s ease, opacity 0.3s ease;
+    -webkit-transition: transform 0.5s ease, opacity 0.3s ease;
+    opacity: 0;
   }
   .header-mobile-menu__bg div {
     -webkit-transform: translateY(50px);
@@ -114,6 +121,14 @@ header {
   .header-mobile-menu a:hover,
   .header-mobile-menu a:active {
     color: #495668;
+  }
+  .header-mobile-menu.open .header-mobile-menu__wrapper {
+    z-index: 10;
+  }
+  .header-mobile-menu.open .header-mobile-menu__bg {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    opacity: 1;
   }
 }
 </style>

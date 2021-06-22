@@ -4,7 +4,7 @@
     :class="item.muted ? 'table-item--muted' : ''"
     v-if="signature[item.code] !== null"
   >
-    <span>{{ item.text }}</span>
+    <span>{{ item.text }}:</span>
     <span>
       {{ value }}
       <the-notice v-if="item.notice" :text="item.notice"></the-notice>
@@ -50,11 +50,33 @@ export default {
 }
 .table-item span:nth-of-type(2) {
   color: #495668;
+  text-align: right;
+  word-break: break-word;
+  margin-left: 15px;
 }
 .table-item.table-item--muted span:nth-of-type(2) {
-  color: #fabec0;
+  color: #838c98;
 }
 .table-item .notice {
   margin-left: 15px;
+}
+@media (max-width: 575px) {
+  .table-item {
+    display: block;
+  }
+  .table-item span {
+    display: block;
+    text-align: center;
+  }
+  .table-item > span:first-child {
+    margin-bottom: 10px;
+  }
+  .table-item > span:nth-of-type(2) {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  .table-item .notice {
+    margin: 10px 0 0;
+  }
 }
 </style>

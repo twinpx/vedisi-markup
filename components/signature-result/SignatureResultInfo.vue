@@ -4,7 +4,13 @@
       <span
         class="signature-result-info__filename"
         v-if="$store.state.result.PDF.filename"
-        ><i></i><span>{{ $store.state.result.PDF.filename }}</span></span
+        ><i></i
+        ><span
+          >{{ $store.state.result.PDF.filename }}<br /><span
+            class="signature-result-info__filename__md5"
+            >Контрольная сумма MD5: {{ $store.state.result.PDF.MD5 }}</span
+          ></span
+        ></span
       >
       <span
         class="signature-result-info__md5"
@@ -46,6 +52,7 @@ export default {
   display: flex;
   align-items: center;
   margin-right: 44px;
+  flex-shrink: 0;
 }
 .signature-result-info__filename i {
   width: 32px;
@@ -54,6 +61,12 @@ export default {
   background-size: contain;
   margin-right: 10px;
 }
+.signature-result-info__filename__md5 {
+  display: none;
+}
+.signature-result-info__md5 {
+  display: none;
+}
 .signature-result-info__left {
   display: flex;
   align-items: center;
@@ -61,5 +74,20 @@ export default {
 
 .signature-result-info .button {
   min-width: 136px;
+}
+.signature-result-info__again {
+  display: none;
+}
+
+@media (max-width: 575px) {
+  .signature-result-info {
+    font-size: 0.55rem;
+  }
+  .signature-result-info__filename__md5 {
+    display: inline;
+  }
+  .signature-result-info__right .button {
+    display: none;
+  }
 }
 </style>

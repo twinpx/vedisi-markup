@@ -40,4 +40,10 @@ export default {
   background-color: #c8df52;
   margin-bottom: 120px;
 }
+
+@media (max-width: 575px) {
+  .content-body--success {
+    padding-bottom: 0;
+  }
+}
 </style>

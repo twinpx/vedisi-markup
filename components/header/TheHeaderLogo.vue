@@ -154,6 +154,7 @@ export default {
 <style>
 .header-logo {
   position: relative;
+  white-space: nowrap;
   z-index: 11;
 }
 .header-logo--hoverable {

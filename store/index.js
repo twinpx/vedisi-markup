@@ -40,15 +40,15 @@ export const state = () => ({
       },*/
       {
         code: "type",
-        text: "Тип подписи:"
+        text: "Тип подписи"
       },
       {
         code: "signatureName",
-        text: "Название подписи:"
+        text: "Название подписи"
       },
       {
         code: "coverWholeDocument",
-        text: "Относится ко всему документу:",
+        text: "Относится ко всему документу",
         value: {
           true: "Да",
           false: "Нет"
@@ -56,11 +56,11 @@ export const state = () => ({
       },
       {
         code: "sigReason",
-        text: "Основание подписи:"
+        text: "Основание подписи"
       },
       {
         code: "sigLocation",
-        text: "Место подписи:"
+        text: "Место подписи"
       },
       {
         code: "sigContact",
@@ -68,19 +68,21 @@ export const state = () => ({
       },
       {
         code: "sigDate",
-        text: "Дата подписи из PDF:",
+        text: "Дата подписи из PDF",
         muted: true,
-        notice: "Пояснение о том, для чего нужна сноска."
+        notice:
+          "Время и дата указаны в соответствии с часами компьютера подписанта и не могут быть доверенными."
       },
       {
         code: "signingTime",
-        text: "Дата подписи из самой подписи:",
+        text: "Дата подписи из самой подписи",
         muted: true,
-        notice: "Пояснение о том, для чего нужна сноска."
+        notice:
+          "Время и дата указаны в соответствии с часами компьютера подписанта и не могут быть доверенными."
       },
       {
         code: "signingTimestamp",
-        text: "Дата подписи из внешнего штампа времени:"
+        text: "Дата подписи из метки доверенного времени"
       }
     ],
     personType: [
@@ -104,17 +106,16 @@ export const state = () => ({
         code: "subject",
         text: "Дополнительные данные сертификата",
         dropdown: true
-      }
-    ],
-    otherType: [
+      },
       {
         code: "issuerName",
-        text: "Выдан"
+        text: "Издатель сертификата"
       },
-      /*{
+      {
         code: "issuer",
-        text: "Дополнительные данные сертификата издателя"
-      },*/
+        text: "Дополнительные данные сертификата издателя",
+        dropdown: true
+      },
       {
         code: "certNotBefore",
         after: "certNotAfter",
@@ -127,6 +128,10 @@ export const state = () => ({
       {
         code: "certThumbprint",
         text: "Отпечаток"
+      },
+      {
+        code: "timestampName",
+        text: "Метка доверенного времени от"
       }
     ]
   }

@@ -1,7 +1,9 @@
 <template>
   <div class="header-statistics" v-if="docsNum">
     <div class="header-statistics__num">{{ docsNum }}</div>
-    <div class="header-statistics__text">{{ docsText }}<br />проверили</div>
+    <div class="header-statistics__text">
+      {{ docsText }}<br />{{ checkText }} сервисом
+    </div>
   </div>
 </template>
 
@@ -9,20 +11,33 @@
 export default {
   data() {
     return {
-      docsNum: null
+      docsNum: null,
+      cases: [2, 0, 1, 1, 1, 2]
     };
   },
   computed: {
     docsText() {
-      if (/(10|11|12|13|14|15|16|17|18|19)$/.test(this.docsNum)) {
-        return "документов";
-      } else if (/.*1$/.test(this.docsNum)) {
-        return "документ";
-      } else if (/[2-4]$/.test(this.docsNum)) {
-        return "документа";
-      } else {
-        return "документов";
-      }
+      return this.declOfNum(this.docsNum, [
+        "документ",
+        "документа",
+        "документов"
+      ]);
+    },
+    checkText() {
+      return this.declOfNum(this.docsNum, [
+        "проверен",
+        "проверено",
+        "проверено"
+      ]);
+    }
+  },
+  methods: {
+    declOfNum(number, titles) {
+      return titles[
+        number % 100 > 4 && number % 100 < 20
+          ? 2
+          : this.cases[number % 10 < 5 ? number % 10 : 5]
+      ];
     }
   },
   async mounted() {
