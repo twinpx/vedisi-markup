@@ -153,6 +153,11 @@ a.copyright {
   font-size: 0.8rem;
   margin: 100px auto 50px;
 }
+h1 {
+  font-size: 3rem;
+  margin: 0 0 42px;
+  text-align: center;
+}
 .copyright img {
   display: block;
   margin-bottom: 10px;
@@ -207,5 +212,11 @@ a.copyright {
   line-height: 80px;
   border-radius: 40px;
   font-size: 1.4rem;
+}
+@media (max-width: 767px) {
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 40px;
+  }
 }
 </style>

@@ -47,6 +47,7 @@ export default {
   justify-content: space-between;
   font-size: 0.7rem;
   margin: 20px 0 35px;
+  height: 40px;
 }
 .signature-result-info__filename {
   display: flex;
@@ -63,9 +64,10 @@ export default {
 }
 .signature-result-info__filename__md5 {
   display: none;
+  word-wrap: break-word;
 }
 .signature-result-info__md5 {
-  display: none;
+  word-wrap: break-word;
 }
 .signature-result-info__left {
   display: flex;
@@ -78,16 +80,23 @@ export default {
 .signature-result-info__again {
   display: none;
 }
-
+@media (max-width: 767px) {
+  .signature-result-info__right .button {
+    display: none;
+  }
+}
 @media (max-width: 575px) {
   .signature-result-info {
     font-size: 0.55rem;
   }
+  .signature-result-info__md5 {
+    display: none;
+  }
+  .signature-result-info__filename {
+    width: 100%;
+  }
   .signature-result-info__filename__md5 {
     display: inline;
-  }
-  .signature-result-info__right .button {
-    display: none;
   }
 }
 </style>

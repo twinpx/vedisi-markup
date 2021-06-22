@@ -11,10 +11,9 @@
 
     <span
       v-if="item.dropdown"
-      @click="open = !open"
+      @click="slideToggle($event)"
       class="table-item__dropdown-icon"
-      >></span
-    >
+    ></span>
     <span v-else-if="item.code === 'subjectName'">
       <a :download="signature.certThumbprint + '.cer'" :href="href">
         {{ value }}
@@ -61,6 +60,37 @@ export default {
         return result;
       }
     }
+  },
+  methods: {
+    slideToggle(event) {
+      const toggleContent = event.target
+        .closest(".table-item")
+        .querySelector(".table-item__dropdown");
+      if (!toggleContent.classList.contains("show")) {
+        toggleContent.classList.add("show");
+        toggleContent.style.height = "auto";
+
+        var height = toggleContent.clientHeight + "px";
+
+        toggleContent.style.height = "0px";
+
+        setTimeout(function() {
+          toggleContent.style.height = height;
+        }, 0);
+      } else {
+        toggleContent.style.height = "0px";
+
+        toggleContent.addEventListener(
+          "transitionend",
+          function() {
+            toggleContent.classList.remove("show");
+          },
+          {
+            once: true
+          }
+        );
+      }
+    }
   }
 };
 </script>
@@ -75,7 +105,10 @@ export default {
 }
 .table-item.table-item--droppable {
   flex-wrap: wrap;
-  padding-bottom: 0;
+  padding-bottom: 10px;
+}
+.table-item.table-item--droppable span:nth-of-type(1) {
+  margin-bottom: 5px;
 }
 .table-item span:nth-of-type(2) {
   color: #495668;
@@ -86,14 +119,20 @@ export default {
 .table-item__dropdown {
   width: 100%;
   color: #495668;
-  padding-top: 15px;
-  opacity: 0;
+  opacity: 1;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
-  height: 0;
   overflow: hidden;
 }
+.table-item__dropdown:not(.show) {
+  opacity: 0;
+  display: none;
+}
 .table-item__dropdown-icon {
+  width: 18px;
+  height: 18px;
+  background-image: url("~/assets/icon-dropdown.svg");
+  background-size: cover;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
@@ -102,8 +141,7 @@ export default {
   -webkit-transform: rotate(180deg);
 }
 .table-item--open .table-item__dropdown {
-  height: 100px;
-  opacity: 1;
+  display: block;
 }
 @media (max-width: 575px) {
   .table-item {
@@ -122,6 +160,10 @@ export default {
   }
   .table-item .notice {
     margin: 10px 0 0;
+  }
+  .table-item span.table-item__dropdown-icon {
+    display: block;
+    margin: 0 auto;
   }
 }
 </style>

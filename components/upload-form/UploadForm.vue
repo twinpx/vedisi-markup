@@ -2,8 +2,8 @@
   <div>
     <div class="content-body content-body--form">
       <h1>Проверка квалифицированной электронной подписи PDF-документа</h1>
-      <div class="condition-link">
-        <NuxtLink to="/conditions">Условия использования</NuxtLink>
+      <div class="conditions-link">
+        <NuxtLink to="/conditions"> <i></i> Условия использования</NuxtLink>
       </div>
       <form action="" method="POST">
         <div class="upload-form-control" @drop.prevent="drop()">
@@ -13,6 +13,7 @@
             id="pdfFile"
             @change="uploadFile"
             ref="pdfFile"
+            accept=".pdf"
           />
           <div
             class="upload-form-button"
@@ -26,7 +27,7 @@
               >
             </div>
 
-            <div class="upload-form__dragndrop" ref="dragndrop">
+            <div class="upload-form__dragndrop" ref="dragndrop" v-if="false">
               <span>или перетащите его в область</span>
             </div>
           </div>
@@ -279,21 +280,38 @@ export default {
   background-color: #fede00;
   margin-bottom: 100px;
 }
-h1 {
-  font-size: 3rem;
-  margin: 0 0 42px;
-  text-align: center;
+.content-body--form h1 {
+  margin-bottom: 10px;
 }
-.condition-link {
+.conditions-link {
   font-size: 0.8rem;
-  text-align: center;
   color: #000;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
 }
-.condition-link a,
-.condition-link a:hover,
-.condition-link a:active {
+.conditions-link a {
   color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 33px;
+  border-radius: 16px;
+  padding: 0 10px;
+  transition: background-color 0.3s ease-out;
+}
+.conditions-link a:hover,
+.conditions-link a:active {
+  color: #000;
+  opacity: 1;
+  background-color: #fff;
+}
+.conditions-link i {
+  width: 18px;
+  height: 18px;
+  background: url("~/assets/icon-conditions.svg") no-repeat center;
+  background-size: cover;
+  margin-right: 5px;
 }
 .upload-form-control {
   background-color: #fff;
@@ -401,39 +419,73 @@ label.button-checkbox span::after {
     padding: 40px 20px;
     border-radius: 20px;
     background-position: 0 0;
-    background-size: 400%;
+    background-size: 200%;
   }
-  h1 {
+  .content-body--form h1 {
     font-size: 1.5rem;
     margin: 0 0 40px;
   }
   .content-body--form {
-    margin-bottom: 200px;
+    margin-bottom: 300px;
     position: relative;
   }
-  .content-body--form p {
-    width: auto;
-    margin: 0 0 40px;
-  }
-  .condition-link {
+  .conditions-link {
     margin-bottom: 0;
+  }
+  .upload-form-control__error {
+    margin-bottom: 25px;
+    height: 32px;
   }
   .upload-form-control {
     background-color: transparent;
     border-radius: 0;
     width: auto;
+    height: 200px;
     margin: 0;
     padding: 0;
     text-align: center;
     box-shadow: none;
     position: absolute;
-    bottom: -110px;
+    bottom: -230px;
     left: 0;
     width: 100%;
     min-width: 100%;
+    min-height: 0;
   }
   .upload-form__dragndrop {
     display: none;
+  }
+  .input-file label.button {
+    margin-bottom: 0;
+  }
+  .upload-form-comfirmation__text {
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+  }
+  .upload-form-confirmation__preloader {
+    margin-bottom: 20px;
+  }
+  .upload-form-comfirmation .button {
+    width: 150px;
+    padding: 0 10px;
+    margin: 0 5px;
+  }
+  label.button-checkbox span::before {
+    display: none;
+  }
+  label.button-checkbox {
+    padding-left: 10px;
+  }
+  .upload-form-text {
+    display: none;
+  }
+}
+@media (max-width: 575px) {
+  .content-body {
+    background-size: 400%;
+  }
+  .upload-form-text {
+    width: 90%;
   }
 }
 @keyframes rotate {

@@ -63,6 +63,9 @@ export default {
     margin: 0 -20px;
     width: calc(100% + 40px);
     padding: 40px 20px;
+  }
+  .content-body--success .table,
+  .content-body--error .table {
     box-shadow: none;
   }
 }
