@@ -1,77 +1,81 @@
 <template>
-  <div class="content-body content-body--form">
-    <h1>Проверка квалифицированной электронной подписи PDF-документа</h1>
-    <p>
+  <div>
+    <div class="content-body content-body--form">
+      <h1>Проверка квалифицированной электронной подписи PDF-документа</h1>
+      <div class="condition-link">
+        <NuxtLink to="/conditions">Условия использования</NuxtLink>
+      </div>
+      <form action="" method="POST">
+        <div class="upload-form-control" @drop.prevent="drop()">
+          <input
+            type="file"
+            name="pdfFile"
+            id="pdfFile"
+            @change="uploadFile"
+            ref="pdfFile"
+          />
+          <div
+            class="upload-form-button"
+            v-if="$store.state.uploadStatus === 'form'"
+          >
+            <div class="upload-form-control__error" v-text="error"></div>
+
+            <div class="input-file">
+              <label for="pdfFile" class="button button--large"
+                >Выберите PDF-файл</label
+              >
+            </div>
+
+            <div class="upload-form__dragndrop" ref="dragndrop">
+              <span>или перетащите его в область</span>
+            </div>
+          </div>
+
+          <div
+            class="upload-form-comfirmation"
+            v-if="$store.state.uploadStatus === 'confirmation'"
+          >
+            <div class="upload-form-comfirmation__text">
+              Информируем вас о том,<br />что мы обрабатываем, но не храним и не
+              передаём персональные данные.<br />Вы даёте своё согласие?
+            </div>
+            <label
+              class="button-checkbox button button--success button--middle"
+            >
+              <input type="checkbox" @change="confirm()" />
+              <span>Подтверждаю</span>
+            </label>
+            <button
+              class="button button--danger button--middle"
+              @click.prevent="refuse()"
+            >
+              Отменить
+            </button>
+          </div>
+
+          <div
+            class="upload-form-uploading"
+            v-if="$store.state.uploadStatus === 'uploading'"
+          >
+            <div class="upload-form-comfirmation__text">
+              Идет проверка документа,<br />подождите, пожалуйста.
+            </div>
+            <div class="upload-form-confirmation__preloader"></div>
+            <button
+              class="button button--gray button--middle"
+              @click.prevent="refuseUploading()"
+            >
+              Отменить
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p class="upload-form-text">
       Сервис поможет вам проверить действительность квалифицированной
       электронной подписи, чтобы убедиться в юридической силе электронного
       документа.
     </p>
-    <div class="condition-link">
-      <NuxtLink to="/conditions">Условия использования</NuxtLink>
-    </div>
-    <form action="" method="POST">
-      <div class="upload-form-control" @drop.prevent="drop()">
-        <input
-          type="file"
-          name="pdfFile"
-          id="pdfFile"
-          @change="uploadFile"
-          ref="pdfFile"
-        />
-        <div
-          class="upload-form-button"
-          v-if="$store.state.uploadStatus === 'form'"
-        >
-          <div class="upload-form-control__error" v-text="error"></div>
-
-          <div class="input-file">
-            <label for="pdfFile" class="button button--large"
-              >Выберите PDF-файл</label
-            >
-          </div>
-
-          <div class="upload-form__dragndrop" ref="dragndrop">
-            <span>или перетащите его в область</span>
-          </div>
-        </div>
-
-        <div
-          class="upload-form-comfirmation"
-          v-if="$store.state.uploadStatus === 'confirmation'"
-        >
-          <div class="upload-form-comfirmation__text">
-            Информируем вас о том,<br />что мы обрабатываем, но не храним и не
-            передаём персональные данные.<br />Вы даёте своё согласие?
-          </div>
-          <label class="button-checkbox button button--success button--middle">
-            <input type="checkbox" @change="confirm()" />
-            <span>Подтверждаю</span>
-          </label>
-          <button
-            class="button button--danger button--middle"
-            @click.prevent="refuse()"
-          >
-            Отменить
-          </button>
-        </div>
-
-        <div
-          class="upload-form-uploading"
-          v-if="$store.state.uploadStatus === 'uploading'"
-        >
-          <div class="upload-form-comfirmation__text">
-            Идет проверка документа,<br />подождите, пожалуйста.
-          </div>
-          <div class="upload-form-confirmation__preloader"></div>
-          <button
-            class="button button--gray button--middle"
-            @click.prevent="refuseUploading()"
-          >
-            Отменить
-          </button>
-        </div>
-      </div>
-    </form>
   </div>
 </template>
 
@@ -277,12 +281,7 @@ export default {
 }
 h1 {
   font-size: 3rem;
-  margin: 0 130px 42px;
-  text-align: center;
-}
-.content-body--form p {
-  width: 50%;
-  margin: 0 auto 20px;
+  margin: 0 0 42px;
   text-align: center;
 }
 .condition-link {
@@ -315,6 +314,11 @@ h1 {
 }
 .upload-form-control span {
   font-size: 0.9rem;
+}
+.upload-form-text {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
 }
 /*upload form*/
 .upload-form-control input[type="file"] {
@@ -351,7 +355,7 @@ h1 {
 }
 label.button-checkbox {
   position: relative;
-  padding-left: 20px;
+  padding-left: 40px;
 }
 .button-checkbox input {
   display: none;
@@ -383,7 +387,8 @@ label.button-checkbox span::after {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
-.button-checkbox input:checked ~ span::after {
+.button-checkbox input:checked ~ span::after,
+.button-checkbox:hover input ~ span::after {
   display: block;
 }
 /*Uploading*/

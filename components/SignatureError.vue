@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
 .signature-result-item {
   margin-bottom: 140px;
 }

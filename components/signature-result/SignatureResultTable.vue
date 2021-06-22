@@ -41,8 +41,13 @@ export default {
   background-color: #fff;
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0px 5px 50px #c8df524d;
   margin-bottom: -40px;
+}
+.content-body--success .table {
+  box-shadow: 0px 5px 50px #c8df524d;
+}
+.content-body--error .table {
+  box-shadow: 0px 5px 50px #e23f454d;
 }
 .table-check-items,
 .table-data-items,

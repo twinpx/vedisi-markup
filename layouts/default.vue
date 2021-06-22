@@ -151,7 +151,7 @@ a.copyright {
   width: 135px;
   text-align: center;
   font-size: 0.8rem;
-  margin: 135px auto 50px;
+  margin: 100px auto 50px;
 }
 .copyright img {
   display: block;
