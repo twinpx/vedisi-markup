@@ -14,9 +14,14 @@
       @click="slideToggle($event)"
       class="table-item__dropdown-icon"
     ></span>
-    <span v-else-if="item.code === 'subjectName'">
-      <a :download="signature.certThumbprint + '.cer'" :href="href">
-        {{ value }}
+
+    <span v-else-if="item.cer" class="text-icon">
+      <span>{{ value }}</span>
+      <a
+        :download="signature[item.thumbprint] + '.cer'"
+        :href="href"
+        class="icon-cer"
+      >
       </a>
     </span>
 
@@ -41,7 +46,7 @@ export default {
   },
   computed: {
     href() {
-      let base64Data = this.signature.certificate;
+      let base64Data = this.signature[this.item.cer];
       let blob = new Blob([base64Data]);
       return URL.createObjectURL(blob);
     },
@@ -142,6 +147,20 @@ export default {
 }
 .table-item--open .table-item__dropdown {
   display: block;
+}
+.icon-cer {
+  display: inline-block;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  background: url("~/assets/icon-cer.svg") no-repeat center;
+  background-size: cover;
+  margin-left: 20px;
+}
+.text-icon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 @media (max-width: 575px) {
   .table-item {

@@ -138,7 +138,6 @@
 export default {
   methods: {
     clickLogo() {
-      console.log(this.$store.state.uploadStatus);
       if (
         this.$store.state.uploadStatus !== "form" &&
         this.$store.state.uploadStatus !== "uploading"

@@ -22,7 +22,10 @@
             <div class="upload-form-control__error" v-text="error"></div>
 
             <div class="input-file">
-              <label for="pdfFile" class="button button--large"
+              <label
+                for="pdfFile"
+                class="button button--large"
+                @click="clickUpload()"
                 >Выберите PDF-файл</label
               >
             </div>
@@ -92,7 +95,12 @@ export default {
   },
   methods: {
     drop() {
-      console.log("sdf");
+      //console.log("sdf");
+    },
+    clickUpload() {
+      if (window.ym) {
+        window.ym(this.$store.state.counters.ym, "reachGoal", "CLICK_UPLOAD");
+      }
     },
     uploadFile() {
       //if size is acceptable
@@ -105,7 +113,7 @@ export default {
       }
 
       //if the file extention is not pdf
-      const filename = this.$refs.pdfFile.files[0].name;
+      /*const filename = this.$refs.pdfFile.files[0].name;
       const lastIndex = filename.lastIndexOf(".");
 
       if (filename.substring(lastIndex + 1) !== "pdf") {
@@ -113,15 +121,21 @@ export default {
         return;
       } else {
         this.error = "";
-      }
+      }*/
 
       this.$store.commit("changeUploadStatus", "confirmation");
     },
     confirm() {
+      if (window.ym) {
+        window.ym(this.$store.state.counters.ym, "reachGoal", "CLICK_CONFIRM");
+      }
       this.$store.commit("changeUploadStatus", "uploading");
       this.sendFile();
     },
     refuse() {
+      if (window.ym) {
+        window.ym(this.$store.state.counters.ym, "reachGoal", "CLICK_REFUSE");
+      }
       this.$store.commit("changeUploadStatus", "form");
     },
     refuseUploading() {
@@ -133,7 +147,7 @@ export default {
       //create controller
       this.controller = new AbortController();
 
-      //check if there files
+      //check if there are files
       if (this.$refs.pdfFile.files.length == 0) {
         throw new Error("No file selected");
       }
@@ -209,6 +223,8 @@ export default {
           let json = await response.json();
           this.$store.commit("changeResult", json);
           this.$store.commit("changeUploadStatus", "success");
+          //set browser history
+          window.history.pushState({ state: "success" }, "", "#verify");
           break;
         }
       } while (true);
@@ -217,6 +233,7 @@ export default {
     }
   },
   mounted() {
+    //drag and drop
     this.isAdvancedUpload = (() => {
       let div = document.createElement("div");
       return (
@@ -227,41 +244,16 @@ export default {
     })();
 
     if (this.isAdvancedUpload) {
-      document.addEventListener(
-        "drop",
-        function(event) {
-          // prevent default action (open as link for some elements)
-          event.preventDefault();
-          // move dragged elem to the selected drop target
-          console.log("dragndrop");
-          /*if (event.target.className == "dropzone") {
-            event.target.style.background = "";
-            dragged.parentNode.removeChild(dragged);
-            event.target.appendChild(dragged);
-          }*/
-        },
-        false
-      );
-      /*let droppedFiles = false;
-
-      $form
-        .on(
-          "drag dragstart dragend dragover dragenter dragleave drop",
-          function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        )
-        .on("dragover dragenter", function() {
-          $form.addClass("is-dragover");
-        })
-        .on("dragleave dragend drop", function() {
-          $form.removeClass("is-dragover");
-        })
-        .on("drop", function(e) {
-          droppedFiles = e.originalEvent.dataTransfer.files;
-        });*/
     }
+
+    //browser history
+    window.onpopstate = event => {
+      if (event.state === null || !event.state.state) {
+        this.$store.commit("changeUploadStatus", "form");
+      } else {
+        this.$store.commit("changeUploadStatus", event.state.state);
+      }
+    };
   }
 };
 </script>

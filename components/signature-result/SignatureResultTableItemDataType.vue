@@ -5,8 +5,8 @@
     v-if="signature[item.code] !== null"
   >
     <span>{{ item.text }}:</span>
-    <span>
-      {{ value }}
+    <span class="text-icon">
+      <span>{{ value }}</span>
       <the-notice v-if="item.notice" :text="item.notice"></the-notice>
     </span>
   </div>
@@ -59,6 +59,11 @@ export default {
 }
 .table-item .notice {
   margin-left: 15px;
+}
+.text-icon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 @media (max-width: 575px) {
   .table-item {

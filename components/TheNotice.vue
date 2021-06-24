@@ -35,6 +35,7 @@ export default {
   text-align: center;
   line-height: 24px;
   cursor: pointer;
+  color: #333;
 }
 .notice-text {
   position: absolute;
