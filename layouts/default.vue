@@ -119,8 +119,8 @@ a.copyright {
   display: inline-block;
   padding: 0 15px;
   font-weight: 600;
-  -webkit-transition: color 0.3s ease;
-  transition: background-color 0.3s ease;
+  -webkit-transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
   border: none;
 }
@@ -144,6 +144,7 @@ a.copyright {
 }
 .button--gray:hover {
   background-color: #ff0000;
+  color: #fff;
 }
 .button--small {
   height: 40px;

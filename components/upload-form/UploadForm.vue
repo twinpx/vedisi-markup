@@ -71,9 +71,9 @@
             class="upload-form-uploading"
             v-if="$store.state.uploadStatus === 'uploading'"
           >
-            <div class="upload-form-confirmation__preloader"></div>
+            <div class="upload-form-uploading__preloader"></div>
             <button
-              class="button button--gray button--middle"
+              class="button button--gray button--small"
               @click.prevent="refuseUploading()"
             >
               Отменить
@@ -140,10 +140,14 @@ export default {
       this.sendFile();
     },
     refuse() {
+      //yandex metrika
       if (window.ym) {
         window.ym(this.$store.state.counters.ym, "reachGoal", "CLICK_REFUSE");
       }
+      //back to the main page
       this.$store.commit("changeUploadStatus", "form");
+      //clear the file input
+      this.$refs.pdfFile.value = "";
     },
     refuseUploading() {
       this.controller.abort();
@@ -233,9 +237,18 @@ export default {
             this.$store.state.result.signatures &&
             this.$store.state.result.signatures.length
           ) {
-            this.$store.commit("changeUploadStatus", "success");
             //set browser history
-            window.history.pushState({ state: "success" }, "", "#verify");
+            this.$router.push(
+              "/#verify",
+              () => {
+                this.$store.commit("changeUploadStatus", "success");
+                console.log(this.$store.state.uploadStatus);
+                console.log(this.$store.state.result);
+              },
+              () => {
+                throw new Error();
+              }
+            );
           } else {
             this.$store.commit("changeUploadStatus", "error");
             //set browser history
@@ -262,15 +275,6 @@ export default {
 
     if (this.isAdvancedUpload) {
     }
-
-    //browser history
-    window.onpopstate = event => {
-      if (event.state === null || !event.state.state) {
-        this.$store.commit("changeUploadStatus", "form");
-      } else {
-        this.$store.commit("changeUploadStatus", event.state.state);
-      }
-    };
   }
 };
 </script>
@@ -365,17 +369,8 @@ export default {
 }
 /*Confirmation*/
 .upload-form-comfirmation__text {
-  margin-bottom: 40px;
-}
-.upload-form-confirmation__preloader {
-  width: 75px;
-  height: 75px;
-  background-image: url("~/assets/preloader.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  margin: 0 auto 40px;
-  animation: rotate 1s linear infinite;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
 .upload-form-comfirmation .button {
   width: 186px;
@@ -420,6 +415,20 @@ label.button-checkbox span::after {
   display: block;
 }
 /*Uploading*/
+.upload-form-uploading {
+  -webkit-transform: translateY(70px);
+  transform: translateY(70px);
+}
+.upload-form-uploading__preloader {
+  width: 75px;
+  height: 75px;
+  background-image: url("~/assets/preloader.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  margin: 0 auto 40px;
+  animation: rotate 1s linear infinite;
+}
 .upload-form-uploading .button {
   min-width: 120px;
 }
@@ -475,12 +484,8 @@ label.button-checkbox span::after {
   }
   .upload-form-comfirmation__text {
     font-size: 0.8rem;
-    margin-bottom: 0.8rem;
-  }
-  .upload-form-confirmation__preloader {
-    margin: 1rem auto 2rem;
-    width: 55px;
-    height: 55px;
+    margin-top: 0;
+    margin-bottom: 2rem;
   }
   .upload-form-comfirmation .button {
     width: 150px;
@@ -488,10 +493,23 @@ label.button-checkbox span::after {
     margin: 0 5px;
   }
   label.button-checkbox span::before {
+    display: none !important;
+  }
+
+  .button-checkbox input:checked ~ span::after,
+  .button-checkbox:hover input ~ span::after {
     display: none;
   }
   label.button-checkbox {
     padding-left: 10px;
+  }
+  .upload-form-uploading {
+    transform: none;
+  }
+  .upload-form-uploading__preloader {
+    margin: 1rem auto 2rem;
+    width: 55px;
+    height: 55px;
   }
   a.copyright {
     margin-top: 50px;

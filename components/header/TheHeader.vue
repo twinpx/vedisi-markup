@@ -1,6 +1,7 @@
 <template>
   <header>
-    <header-logo></header-logo>
+    <header-logo v-if="$router.name === 'index'"></header-logo>
+    <header-logo-link v-else></header-logo-link>
 
     <div class="header-middle">
       <header-statistics
@@ -33,16 +34,20 @@
 <script>
 import HeaderStatistics from "./TheHeaderStatisctics.vue";
 import HeaderLogo from "./TheHeaderLogo.vue";
+import HeaderLogoLink from "./TheHeaderLogoLink.vue";
 
 export default {
   watch: {
     $route() {
       //hide menu
-      this.clickMenuIcon();
+      if (this.menuOpen === true) {
+        this.clickMenuIcon();
+      }
       //clear upload satus
-      this.$store.commit("changeResult", {});
-      this.$store.commit("changeUploadStatus", "form");
-      console.log(this.$store.state.uploadStatus);
+      if (this.$route.name !== "index") {
+        this.$store.commit("changeResult", {});
+        this.$store.commit("changeUploadStatus", "form");
+      }
     }
   },
   data() {
@@ -64,7 +69,8 @@ export default {
   },
   components: {
     HeaderStatistics,
-    HeaderLogo
+    HeaderLogo,
+    HeaderLogoLink
   },
   mounted() {
     document.addEventListener("click", e => {

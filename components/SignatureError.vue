@@ -1,11 +1,18 @@
 <template>
-  <div class="content-body content-body--error">
-    <h1>Подпись не обнаружена</h1>
+  <div>
+    <signature-result-info></signature-result-info>
+
+    <div class="content-body content-body--error">
+      <h1>Подпись не обнаружена</h1>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import SignatureResultInfo from "./signature-result/SignatureResultInfo.vue";
+export default {
+  components: { SignatureResultInfo }
+};
 </script>
 
 <style scoped>

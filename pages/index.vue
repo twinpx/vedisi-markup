@@ -26,6 +26,12 @@ export default {
     SignatureError,
     SignatureResult
   },
-  layout: "default"
+  layout: "default",
+  mounted() {
+    //browser history
+    window.onpopstate = event => {
+      console.log(this.$route);
+    };
+  }
 };
 </script>
