@@ -1,9 +1,19 @@
 <template>
   <div>
     <div class="content-body content-body--form">
-      <h1>Проверка квалифицированной электронной подписи PDF-документа</h1>
-      <div class="conditions-link">
-        <NuxtLink to="/conditions"> <i></i> Условия использования</NuxtLink>
+      <h1
+        v-text="
+          $store.state.uploadStatus === 'form'
+            ? 'Проверка квалифицированной электронной подписи PDF-документа'
+            : $store.state.uploadStatus === 'confirmation'
+            ? 'Согласитесь с условиями сервиса'
+            : $store.state.uploadStatus === 'uploading'
+            ? 'Идет проверка документа, подождите, пожалуйста'
+            : ''
+        "
+      ></h1>
+      <div class="terms-link">
+        <NuxtLink to="/terms/"> <i></i> Условия использования</NuxtLink>
       </div>
       <form action="" method="POST">
         <div class="upload-form-control" @drop.prevent="drop()">
@@ -40,8 +50,8 @@
             v-if="$store.state.uploadStatus === 'confirmation'"
           >
             <div class="upload-form-comfirmation__text">
-              Информируем вас о том,<br />что мы обрабатываем, но не храним и не
-              передаём персональные данные.<br />Вы даёте своё согласие?
+              Сервис обрабатывает, но не хранит и не передаёт персональные
+              данные.<br />Вы даёте своё согласие?
             </div>
             <label
               class="button-checkbox button button--success button--middle"
@@ -61,9 +71,6 @@
             class="upload-form-uploading"
             v-if="$store.state.uploadStatus === 'uploading'"
           >
-            <div class="upload-form-comfirmation__text">
-              Идет проверка документа,<br />подождите, пожалуйста.
-            </div>
             <div class="upload-form-confirmation__preloader"></div>
             <button
               class="button button--gray button--middle"
@@ -75,7 +82,7 @@
         </div>
       </form>
     </div>
-    <p class="upload-form-text">
+    <p class="upload-form-text" v-if="$store.state.uploadStatus === 'form'">
       Сервис поможет вам проверить действительность квалифицированной
       электронной подписи, чтобы убедиться в юридической силе электронного
       документа.
@@ -222,9 +229,19 @@ export default {
           //Обработка через try
           let json = await response.json();
           this.$store.commit("changeResult", json);
-          this.$store.commit("changeUploadStatus", "success");
-          //set browser history
-          window.history.pushState({ state: "success" }, "", "#verify");
+          if (
+            this.$store.state.result.signatures &&
+            this.$store.state.result.signatures.length
+          ) {
+            this.$store.commit("changeUploadStatus", "success");
+            //set browser history
+            window.history.pushState({ state: "success" }, "", "#verify");
+          } else {
+            this.$store.commit("changeUploadStatus", "error");
+            //set browser history
+            window.history.pushState({ state: "error" }, "", "#verify");
+          }
+
           break;
         }
       } while (true);
@@ -275,14 +292,14 @@ export default {
 .content-body--form h1 {
   margin-bottom: 10px;
 }
-.conditions-link {
+.terms-link {
   font-size: 0.8rem;
   color: #000;
-  margin-bottom: 24px;
+  margin: 1.5rem 0 2rem;
   display: flex;
   justify-content: center;
 }
-.conditions-link a {
+.terms-link a {
   color: #000;
   display: flex;
   justify-content: center;
@@ -292,13 +309,13 @@ export default {
   padding: 0 10px;
   transition: background-color 0.3s ease-out;
 }
-.conditions-link a:hover,
-.conditions-link a:active {
+.terms-link a:hover,
+.terms-link a:active {
   color: #000;
   opacity: 1;
   background-color: #fff;
 }
-.conditions-link i {
+.terms-link i {
   width: 18px;
   height: 18px;
   background: url("~/assets/icon-conditions.svg") no-repeat center;
@@ -311,7 +328,7 @@ export default {
   width: 50%;
   min-width: 528px;
   margin: 0 auto -40px;
-  padding: 40px 74px 42px;
+  padding: 40px 55px 42px;
   text-align: center;
   box-shadow: 0px 5px 50px #fede004d;
   min-height: 300px;
@@ -362,6 +379,7 @@ export default {
 }
 .upload-form-comfirmation .button {
   width: 186px;
+  margin: 0 7px;
 }
 label.button-checkbox {
   position: relative;
@@ -408,24 +426,26 @@ label.button-checkbox span::after {
 
 @media (max-width: 767px) {
   .content-body {
-    padding: 40px 20px;
+    padding: 30px 20px 23px;
     border-radius: 20px;
     background-position: 0 0;
     background-size: 200%;
   }
   .content-body--form h1 {
     font-size: 1.5rem;
-    margin: 0 0 40px;
+    margin: 0 0 1rem;
+    min-height: 108px;
   }
   .content-body--form {
-    margin-bottom: 300px;
+    margin-bottom: 170px;
+    min-height: 210px;
     position: relative;
   }
-  .conditions-link {
-    margin-bottom: 0;
+  .terms-link {
+    margin: 1rem 0 0;
   }
   .upload-form-control__error {
-    margin-bottom: 25px;
+    margin-bottom: 1rem;
     height: 32px;
   }
   .upload-form-control {
@@ -438,7 +458,7 @@ label.button-checkbox span::after {
     text-align: center;
     box-shadow: none;
     position: absolute;
-    bottom: -230px;
+    bottom: -215px;
     left: 0;
     width: 100%;
     min-width: 100%;
@@ -450,12 +470,17 @@ label.button-checkbox span::after {
   .input-file label.button {
     margin-bottom: 0;
   }
+  .upload-form-comfirmation {
+    padding-top: 20px;
+  }
   .upload-form-comfirmation__text {
     font-size: 0.8rem;
-    margin-bottom: 20px;
+    margin-bottom: 0.8rem;
   }
   .upload-form-confirmation__preloader {
-    margin-bottom: 20px;
+    margin: 1rem auto 2rem;
+    width: 55px;
+    height: 55px;
   }
   .upload-form-comfirmation .button {
     width: 150px;
@@ -468,14 +493,11 @@ label.button-checkbox span::after {
   label.button-checkbox {
     padding-left: 10px;
   }
-  .upload-form-text {
-    display: none;
+  a.copyright {
+    margin-top: 50px;
   }
 }
 @media (max-width: 575px) {
-  .content-body {
-    background-size: 400%;
-  }
   .upload-form-text {
     width: 90%;
   }

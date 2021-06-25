@@ -47,7 +47,7 @@ export default {
   computed: {
     href() {
       let base64Data = this.signature[this.item.cer];
-      let blob = new Blob([base64Data]);
+      let blob = new Blob([base64Data], { type: "application/pkix-cert" });
       return URL.createObjectURL(blob);
     },
     value() {
@@ -115,7 +115,7 @@ export default {
 .table-item.table-item--droppable span:nth-of-type(1) {
   margin-bottom: 5px;
 }
-.table-item span:nth-of-type(2) {
+.table-item > span:nth-of-type(2) {
   color: #495668;
   text-align: right;
   word-break: break-word;
@@ -176,6 +176,7 @@ export default {
   .table-item > span:nth-of-type(2) {
     font-size: 0.8rem;
     text-align: center;
+    margin-left: 0;
   }
   .table-item .notice {
     margin: 10px 0 0;
@@ -183,6 +184,9 @@ export default {
   .table-item span.table-item__dropdown-icon {
     display: block;
     margin: 0 auto;
+  }
+  .icon-cer {
+    margin: 10px 0 0;
   }
 }
 </style>

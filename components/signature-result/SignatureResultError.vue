@@ -43,6 +43,10 @@ export default {
 @media (max-width: 575px) {
   .content-body--error {
     padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  .signature-result-item {
+    margin-bottom: 50px;
   }
 }
 </style>

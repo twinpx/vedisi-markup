@@ -46,7 +46,7 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 0.7rem;
-  margin: 20px 0 35px;
+  margin: 20px 40px 35px;
   height: 40px;
 }
 .signature-result-info__filename {
@@ -88,6 +88,8 @@ export default {
 @media (max-width: 575px) {
   .signature-result-info {
     font-size: 0.55rem;
+    margin-left: 0;
+    margin-right: 0;
   }
   .signature-result-info__md5 {
     display: none;

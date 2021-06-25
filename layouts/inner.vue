@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <the-header></the-header>
+    <the-header-inner></the-header-inner>
 
     <Nuxt />
 
@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import TheHeader from "../components/header/TheHeader.vue";
+import TheHeaderInner from "../components/header/TheHeaderInner.vue";
 
 export default {
-  components: { TheHeader },
+  components: { TheHeaderInner },
   head: {
     link: [],
     meta: []

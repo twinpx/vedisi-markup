@@ -9,6 +9,9 @@ export default {};
 </script>
 
 <style scoped>
+h1 {
+  margin-bottom: 30px;
+}
 .signature-result-item {
   margin-bottom: 140px;
 }

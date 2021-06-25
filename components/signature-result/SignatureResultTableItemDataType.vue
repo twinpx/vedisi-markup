@@ -48,7 +48,7 @@ export default {
   padding: 15px 20px;
   font-size: 0.9rem;
 }
-.table-item span:nth-of-type(2) {
+.table-item > span:nth-of-type(2) {
   color: #495668;
   text-align: right;
   word-break: break-word;
@@ -79,6 +79,7 @@ export default {
   .table-item > span:nth-of-type(2) {
     font-size: 0.8rem;
     text-align: center;
+    margin-left: 0;
   }
   .table-item .notice {
     margin: 10px 0 0;

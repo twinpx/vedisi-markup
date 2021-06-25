@@ -44,6 +44,13 @@ export default {
 @media (max-width: 575px) {
   .content-body--success {
     padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  .signature-result-item {
+    margin-bottom: 50px;
+  }
+  .signature-result-item:last-child {
+    margin-bottom: 0;
   }
 }
 </style>

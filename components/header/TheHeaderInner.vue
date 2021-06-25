@@ -1,6 +1,6 @@
 <template>
   <header>
-    <header-logo></header-logo>
+    <header-logo-inner></header-logo-inner>
 
     <div class="header-middle">
       <header-statistics
@@ -32,7 +32,7 @@
 
 <script>
 import HeaderStatistics from "./TheHeaderStatisctics.vue";
-import HeaderLogo from "./TheHeaderLogo.vue";
+import HeaderLogoInner from "./TheHeaderLogoInner.vue";
 
 export default {
   watch: {
@@ -42,7 +42,6 @@ export default {
       //clear upload satus
       this.$store.commit("changeResult", {});
       this.$store.commit("changeUploadStatus", "form");
-      console.log(this.$store.state.uploadStatus);
     }
   },
   data() {
@@ -64,7 +63,7 @@ export default {
   },
   components: {
     HeaderStatistics,
-    HeaderLogo
+    HeaderLogoInner
   },
   mounted() {
     document.addEventListener("click", e => {

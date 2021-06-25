@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU">
+<meta charset="utf-8">
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let input = document.querySelector('#upload-input');
+    let form = document.querySelector('#upload-form');
+    let text = document.querySelector('#ptext');
+    let button_cancel = document.querySelector('#bcancel');
+
+    async function uploadFile(controller) {
+        if (document.querySelector("#pdfFile").files.length == 0) {
+            //throw new Error('No file selected');
+        }
+
+        let formData = new FormData();
+        if (document.querySelector("#pdfFile").files.length != 0) {
+            formData.append("pdfFile", document.querySelector("#pdfFile").files[0]);
+        }
+        if (document.querySelector("#sigFile").files.length != 0) {
+            formData.append("sigFile", document.querySelector("#sigFile").files[0]);
+        }
+
+        let response;
+
+        try {
+            response = await fetch('/upload', {
+                signal: controller.signal,
+                method: 'POST',
+                headers: {
+                    'Authorization': 'token12345'
+                },
+                body: formData
+            });
+        } catch (err) {
+            form.style.display = "inline";
+            text.style.display = "none";
+            button_cancel.style.display = "none";
+            return;
+        }
+
+        let uuid;
+
+        if (response.status != 200) {
+            form.style.display = "inline";
+            text.style.display = "none";
+            button_cancel.style.display = "none";
+            return;
+        } else {
+            let json = await response.json();
+            uuid = json.uuid;
+            text.innerHTML = "Загрузка завершена, ожидаем обработки запроса с ID " + uuid;
+        }
+
+        let status = 0;
+        let json;
+
+        do {
+            try {
+                response = await fetch("/status?uuid=" + uuid, {
+                    signal: controller.signal,
+                    headers: {
+                      'Authorization': 'token12345'
+                    },                    
+                    method: 'GET'
+                });
+            } catch (err) {
+                form.style.display = "inline";
+                text.style.display = "none";
+                text.innerHTML = "Загрузка и обработка...";
+                button_cancel.style.display = "none";
+                return;
+            }
+            
+            if (response.status == 204) {
+              await new Promise(r => setTimeout(r, 1000));
+            }
+            else if (response.status != 200) {
+                form.style.display = "inline";
+                text.style.display = "none";
+                text.innerHTML = "Загрузка и обработка...";
+                button_cancel.style.display = "none";
+                return;
+            } else {
+              //Обработка через try
+              json = await response.json();
+              let res = "Найдено подписей:" + json.signatures.length;
+                res = res + "<br />";
+                let n = 0;
+                json.signatures.forEach((element) => {
+                  if (element.valid) {
+                    res = res + "Подпись " + n + ": ДЕЙСТВИТЕЛЬНА<br />"
+                  }
+                  else
+                  {
+                    res = res + "Подпись " + n + ": НЕДЕЙСТВИТЕЛЬНА<br />"
+                  }
+                  n++;
+                });
+                res = res + "Полные данные:<br />"
+                document.body.innerHTML = res + JSON.stringify(json);
+                break;
+            }
+        } while (true);
+
+
+        return;
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.style.display = "none";
+        text.style.display = "block";
+        button_cancel.style.display = "inline";
+        let controller = new AbortController();
+        button_cancel.onclick = function() {
+            controller.abort();
+            form.style.display = "inline";
+            text.style.display = "none";
+            text.innerHTML = "Загрузка и обработка...";
+            button_cancel.style.display = "none";
+        }
+        uploadFile(controller);
+    });
+});
+</script>
+<head>
+  <title>Проверка ЭП в PDF-файле</title>
+</head>  
+<body>
+  <form id="upload-form" action="upload" method="post" enctype="multipart/form-data">
+    <div>
+      <label for="file">Выберите PDF-файл с встроенной подписью или PDF-файл и отсоединённую подпись в файле SIG/SGN (не более 10 Мбайт для публичного сервера — эту проверку нужно будет делать в JS перед отправкой для предупреждения)</label>
+    </div>
+    <div>
+      <input type="file" name="pdfFile" id="pdfFile" accept=".pdf"/>
+    </div>
+    <div>
+      <input type="file" name="sigFile" id="sigFile" accept=".sig, .sgn" />
+    </div>
+    <div>
+      <input type="submit" name="submit" id="upload-input" value="Отправить" />
+    </div>
+  </form>
+  <div style="display: none" id="ptext">Загрузка и обработка...</div>
+	<button style="display: none" id="bcancel">Отмена</button>
+</body>
+</html>

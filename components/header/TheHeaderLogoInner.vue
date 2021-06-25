@@ -1,13 +1,5 @@
 <template>
-  <div
-    class="header-logo"
-    :class="
-      $store.state.uploadStatus !== 'form' &&
-      $store.state.uploadStatus !== 'uploading'
-        ? 'header-logo--hoverable'
-        : ''
-    "
-  >
+  <nuxt-link to="/" class="header-logo">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="37.173"
@@ -130,23 +122,11 @@
         />
       </g>
     </svg>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
-export default {
-  methods: {
-    clickLogo() {
-      if (
-        this.$store.state.uploadStatus !== "form" &&
-        this.$store.state.uploadStatus !== "uploading"
-      ) {
-        this.$store.commit("changeResult", {});
-        this.$store.commit("changeUploadStatus", "form");
-      }
-    }
-  }
-};
+export default {};
 </script>
 
 <style>
