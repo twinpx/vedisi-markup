@@ -30,7 +30,13 @@ export default {
   mounted() {
     //browser history
     window.onpopstate = event => {
-      console.log(this.$route);
+      if (
+        this.$router.history.current.name === "index" &&
+        this.$router.history.current.hash === ""
+      ) {
+        this.$store.commit("changeResult", {});
+        this.$store.commit("changeUploadStatus", "form");
+      }
     };
   }
 };

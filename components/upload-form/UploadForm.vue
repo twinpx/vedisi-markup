@@ -16,7 +16,7 @@
         <NuxtLink to="/terms/"> <i></i> Условия использования</NuxtLink>
       </div>
       <form action="" method="POST">
-        <div class="upload-form-control" @drop.prevent="drop()">
+        <div class="upload-form-control">
           <input
             type="file"
             name="pdfFile"
@@ -40,7 +40,12 @@
               >
             </div>
 
-            <div class="upload-form__dragndrop" ref="dragndrop" v-if="false">
+            <div
+              class="upload-form__dragndrop"
+              ref="dragndrop"
+              @dragenter="dragenter()"
+              @drop="drop($event)"
+            >
               <span>или перетащите его в область</span>
             </div>
           </div>
@@ -101,8 +106,11 @@ export default {
     };
   },
   methods: {
-    drop() {
-      //console.log("sdf");
+    drop(event) {
+      console.log(event);
+    },
+    dragenter() {
+      console.log("sdf");
     },
     clickUpload() {
       if (window.ym) {
@@ -238,17 +246,19 @@ export default {
             this.$store.state.result.signatures.length
           ) {
             //set browser history
-            this.$router.push(
-              "/#verify",
-              () => {
-                this.$store.commit("changeUploadStatus", "success");
-                console.log(this.$store.state.uploadStatus);
-                console.log(this.$store.state.result);
-              },
-              () => {
-                throw new Error();
-              }
-            );
+            if (this.$router.history.current.hash === "#verify") {
+              this.$store.commit("changeUploadStatus", "success");
+            } else {
+              this.$router.push(
+                "/#verify",
+                () => {
+                  this.$store.commit("changeUploadStatus", "success");
+                },
+                () => {
+                  throw new Error();
+                }
+              );
+            }
           } else {
             this.$store.commit("changeUploadStatus", "error");
             //set browser history
@@ -361,11 +371,10 @@ export default {
   margin: 0 auto 50px;
 }
 .upload-form__dragndrop {
-  width: 64px;
-  height: 64px;
   margin: 0 auto 25px;
-  background: url("~/assets/icon-dragndrop.svg") no-repeat center;
-  background-size: contain;
+  background: url("~/assets/icon-dragndrop.svg") no-repeat center top;
+  background-size: 64px;
+  padding-top: 85px;
 }
 /*Confirmation*/
 .upload-form-comfirmation__text {

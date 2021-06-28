@@ -1,6 +1,6 @@
 <template>
   <header>
-    <header-logo v-if="$router.name === 'index'"></header-logo>
+    <header-logo v-if="!logoLink"></header-logo>
     <header-logo-link v-else></header-logo-link>
 
     <div class="header-middle">
@@ -32,13 +32,19 @@
 </template>
 
 <script>
-import HeaderStatistics from "./TheHeaderStatisctics.vue";
+import HeaderStatistics from "./TheHeaderStatistics.vue";
 import HeaderLogo from "./TheHeaderLogo.vue";
 import HeaderLogoLink from "./TheHeaderLogoLink.vue";
 
 export default {
   watch: {
     $route() {
+      //set link on logo
+      if (this.$router.history.current.name === "index") {
+        this.logoLink = false;
+      } else {
+        this.logoLink = true;
+      }
       //hide menu
       if (this.menuOpen === true) {
         this.clickMenuIcon();
@@ -52,6 +58,7 @@ export default {
   },
   data() {
     return {
+      logoLink: false,
       menuOpen: false,
       menuAnimate: false
     };

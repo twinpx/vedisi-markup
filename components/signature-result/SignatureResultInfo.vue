@@ -35,7 +35,7 @@ export default {
     newUpload() {
       this.$store.commit("changeResult", {});
       this.$store.commit("changeUploadStatus", "form");
-      //this.$refs.pdfFile.files.length = 0;
+      this.$router.go(-1);
     }
   }
 };

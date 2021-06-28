@@ -139,11 +139,26 @@ export default {
   methods: {
     clickLogo() {
       if (
+        //if current page is success page, go back in browser history
+        this.$router.history.current.name === "index" &&
+        this.$router.history.current.hash === "#verify"
+      ) {
+        this.$router.go(-1);
+        /*this.$store.commit("changeResult", {});
+        this.$store.commit("changeUploadStatus", "form");
+        document.querySelector(
+          '.upload-form-control input[type="file"]'
+        ).value = "";*/
+      } else if (
+        //if it is index page, but not form or uploading, just change the state
         this.$store.state.uploadStatus !== "form" &&
         this.$store.state.uploadStatus !== "uploading"
       ) {
         this.$store.commit("changeResult", {});
         this.$store.commit("changeUploadStatus", "form");
+        document.querySelector(
+          '.upload-form-control input[type="file"]'
+        ).value = "";
       }
     }
   }
