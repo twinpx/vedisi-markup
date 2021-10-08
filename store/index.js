@@ -65,7 +65,7 @@ export const state = () => ({
       },
       {
         code: "sigContact",
-        text: "Контактные данные из подписи:"
+        text: "Контактные данные из подписи"
       },
       {
         code: "sigDate",
