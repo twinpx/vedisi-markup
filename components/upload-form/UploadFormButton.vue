@@ -47,26 +47,42 @@ export default {
       }
     },
     uploadFile() {
+      this.$store.commit("setUploadFormProp", {
+        prop: "pdfFile",
+        value: this.$refs.pdfFile.files
+      });
       //if size is acceptable
-      if (this.$refs.pdfFile.files[0].size >= 1e7) {
-        this.$store.commit(
-          "setUploadFormError",
-          "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт."
-        );
+      if (this.$store.state.uploadForm.pdfFile[0].size >= 1e7) {
+        this.$store.commit("setUploadFormProp", {
+          prop: "error",
+          value:
+            "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт."
+        });
         return;
       } else {
-        this.$store.commit("setUploadFormError", "");
+        this.$store.commit("setUploadFormProp", {
+          prop: "error",
+          value: ""
+        });
       }
 
       //if the file extention is not pdf
-      /*const filename = this.$refs.pdfFile.files[0].name;
+      /*const filename = this.$store.state.uploadForm.pdfFile[0].name;
       const lastIndex = filename.lastIndexOf(".");
 
       if (filename.substring(lastIndex + 1) !== "pdf") {
-        this.$store.commit('setUploadFormError', "Сервис поддерживает только проверку файлов PDF.")
+        this.$store.commit("setUploadFormProp", {
+          prop: "error",
+          value:
+            "Сервис поддерживает только проверку файлов PDF."
+        });
         return;
       } else {
-        this.$store.commit('setUploadFormError', "")
+        this.$store.commit("setUploadFormProp", {
+          prop: "error",
+          value:
+            "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт."
+        });
       }*/
 
       this.$store.commit("changeUploadStatus", "confirmation");

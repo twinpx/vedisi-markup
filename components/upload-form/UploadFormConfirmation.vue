@@ -38,22 +38,28 @@ export default {
       //back to the main page
       this.$store.commit("changeUploadStatus", "form");
       //clear the file input
-      this.$refs.pdfFile.value = "";
+      this.$store.commit("setUploadFormProp", {
+        prop: "pdfFile",
+        value: []
+      });
     },
     async sendFile() {
       //create controller
-      this.$store.commit("setUploadFormController", new AbortController());
+      this.$store.commit("setUploadFormProp", {
+        prop: "controller",
+        value: new AbortController()
+      });
 
       //check if there are files
-      if (this.$refs.pdfFile.files.length == 0) {
+      if (this.$store.state.uploadForm.pdfFile.length == 0) {
         throw new Error("No file selected");
       }
 
       //upload file and get uuid
       //create form data
       let formData = new FormData();
-      if (this.$refs.pdfFile.files.length != 0) {
-        formData.append("pdfFile", this.$refs.pdfFile.files[0]);
+      if (this.$store.state.uploadForm.pdfFile.length != 0) {
+        formData.append("pdfFile", this.$store.state.uploadForm.pdfFile[0]);
       }
 
       //response
@@ -73,7 +79,10 @@ export default {
         if (!this.$store.state.uploadForm.controllerAborted) {
           this.error = "Произошла ошибка, попробуйте снова.";
         }
-        this.$store.commit("setUploadFormControllerAborted", false);
+        this.$store.commit("setUploadFormProp", {
+          prop: "controllerAborted",
+          value: false
+        });
         return;
       }
 
@@ -84,7 +93,11 @@ export default {
         if (!this.$store.state.uploadForm.controllerAborted) {
           this.error = "Произошла ошибка, попробуйте снова.";
         }
-        this.$store.commit("setUploadFormControllerAborted", false);
+
+        this.$store.commit("setUploadFormProp", {
+          prop: "controllerAborted",
+          value: false
+        });
         return;
       } else {
         uuid = result.uuid;
@@ -103,7 +116,11 @@ export default {
           if (!this.$store.state.uploadForm.controllerAborted) {
             this.error = "Произошла ошибка, попробуйте снова.";
           }
-          this.$store.commit("setUploadFormControllerAborted", false);
+
+          this.$store.commit("setUploadFormProp", {
+            prop: "controllerAborted",
+            value: false
+          });
           return;
         }
 
@@ -113,7 +130,11 @@ export default {
           if (!this.$store.state.uploadForm.controllerAborted) {
             this.error = "Произошла ошибка, попробуйте снова.";
           }
-          this.$store.commit("setUploadFormControllerAborted", false);
+
+          this.$store.commit("setUploadFormProp", {
+            prop: "controllerAborted",
+            value: false
+          });
           return;
         } else {
           //Обработка через try

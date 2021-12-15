@@ -18,7 +18,10 @@ export default {
   methods: {
     refuseUploading() {
       this.$store.state.uploadForm.controller.abort();
-      this.$store.commit("setUploadFormControllerAborted", true);
+      this.$store.commit("setUploadFormProp", {
+        prop: "controllerAborted",
+        value: true
+      });
       this.$store.commit("changeUploadStatus", "form");
     }
   }

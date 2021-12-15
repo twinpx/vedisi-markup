@@ -4,7 +4,8 @@ export const state = () => ({
   uploadForm: {
     error: "",
     controller: null,
-    controllerAborted: false
+    controllerAborted: false,
+    pdfFile: undefined
   },
   result: {},
   resultTitle: {
@@ -154,13 +155,7 @@ export const mutations = {
   changeUploadStatus(state, status) {
     state.uploadStatus = status;
   },
-  setUploadFormError(state, payload) {
-    state.uploadForm.error = payload;
-  },
-  setUploadFormController(state, payload) {
-    state.uploadForm.controller = payload;
-  },
-  setUploadFormControllerAborted(state, payload) {
-    state.uploadForm.controllerAborted = payload;
+  setUploadFormProp(state, payload) {
+    state.uploadForm[payload.prop] = payload.value;
   }
 };
