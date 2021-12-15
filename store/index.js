@@ -1,6 +1,11 @@
 export const state = () => ({
   counters: { ym: 81665320, ga: "G-YZNW04TXLN" },
   uploadStatus: "form", //form, confirmation, uploading, success, error
+  uploadForm: {
+    error: "",
+    controller: null,
+    controllerAborted: false
+  },
   result: {},
   resultTitle: {
     checkType: [
@@ -148,5 +153,14 @@ export const mutations = {
   },
   changeUploadStatus(state, status) {
     state.uploadStatus = status;
+  },
+  setUploadFormError(state, payload) {
+    state.uploadForm.error = payload;
+  },
+  setUploadFormController(state, payload) {
+    state.uploadForm.controller = payload;
+  },
+  setUploadFormControllerAborted(state, payload) {
+    state.uploadForm.controllerAborted = payload;
   }
 };
