@@ -1,6 +1,6 @@
 <template>
   <div class="upload-form-control">
-    <upload-form-button></upload-form-button>
+    <upload-form-tabs></upload-form-tabs>
     <upload-form-confirmation></upload-form-confirmation>
     <upload-form-uploading></upload-form-uploading>
   </div>
@@ -9,10 +9,14 @@
 <script>
 import UploadFormUploading from "./UploadFormUploading.vue";
 import UploadFormConfirmation from "./UploadFormConfirmation.vue";
-import UploadFormButton from "./UploadFormButton.vue";
+import UploadFormTabs from "./UploadFormTabs.vue";
 
 export default {
-  components: { UploadFormUploading, UploadFormConfirmation, UploadFormButton }
+  components: {
+    UploadFormUploading,
+    UploadFormConfirmation,
+    UploadFormTabs
+  }
 };
 </script>
 

@@ -5,7 +5,40 @@ export const state = () => ({
     error: "",
     controller: null,
     controllerAborted: false,
-    pdfFile: undefined
+    pdfFile: undefined,
+    tabs: [
+      {
+        name: "PDF",
+        value: "pdf",
+        active: true,
+        buttons: [
+          {
+            value: "pdf",
+            name: "Выберите PDF-файл",
+            accept: ".pdf",
+            error: ""
+          }
+        ]
+      },
+      {
+        name: "Файл + SIG",
+        value: "sig",
+        buttons: [
+          {
+            value: "file",
+            name: "Выберите файл",
+            accept: "*",
+            error: ""
+          },
+          {
+            value: "sig",
+            name: "Загрузите SIG-файл",
+            accept: ".sig, .sgn, .p7s",
+            error: ""
+          }
+        ]
+      }
+    ]
   },
   result: {},
   resultTitle: {
@@ -157,5 +190,14 @@ export const mutations = {
   },
   setUploadFormProp(state, payload) {
     state.uploadForm[payload.prop] = payload.value;
+  },
+  setUploadFormButtonError(state, payload) {
+    state.uploadForm.tabs[payload.tabIndex].buttons[payload.buttonIndex] =
+      payload.value;
+  },
+  setUploadFormTabActive(state, payload) {
+    state.uploadForm.tabs.forEach(tab => {
+      tab.active = tab.value === payload ? true : undefined;
+    });
   }
 };

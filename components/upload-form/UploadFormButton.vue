@@ -1,22 +1,21 @@
 <template>
   <div>
+    {{ keyword }}
     <input
       type="file"
       name="pdfFile"
       id="pdfFile"
       @change="uploadFile"
       ref="pdfFile"
-      accept=".pdf"
+      :accept="button.accept"
     />
     <div class="upload-form-button" v-if="$store.state.uploadStatus === 'form'">
-      <div
-        class="upload-form-control__error"
-        v-text="$store.state.uploadForm.error"
-      ></div>
-
       <div class="input-file">
-        <label for="pdfFile" class="button button--large" @click="clickUpload()"
-          >Выберите PDF-файл</label
+        <label
+          for="pdfFile"
+          class="button button--large"
+          @click="clickUpload()"
+          >{{ button.name }}</label
         >
       </div>
 
@@ -28,12 +27,19 @@
       >
         <span>или перетащите его в область</span>
       </div>
+
+      <div class="upload-form-control__error" v-text="button.error"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: "UploadFormButton",
+  props: {
+    keyword: String,
+    button: Object
+  },
   methods: {
     drop(event) {
       console.log(event);
@@ -53,14 +59,14 @@ export default {
       });
       //if size is acceptable
       if (this.$store.state.uploadForm.pdfFile[0].size >= 1e7) {
-        this.$store.commit("setUploadFormProp", {
+        this.$store.commit("setUploadFormButtonError", {
           prop: "error",
           value:
             "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт."
         });
         return;
       } else {
-        this.$store.commit("setUploadFormProp", {
+        this.$store.commit("setUploadFormButtonError", {
           prop: "error",
           value: ""
         });
