@@ -16,7 +16,7 @@
     <div class="upload-form-tabs__items">
       <div
         class="upload-form-tabs__item"
-        v-for="tab in $store.state.uploadForm.tabs"
+        v-for="(tab, tabIndex) in $store.state.uploadForm.tabs"
         :key="tab.value"
         :data-tab="tab.value"
         v-show="tab.active"
@@ -28,6 +28,8 @@
             )}`
           "
           :tab="tab"
+          :tabindex="tabIndex"
+          @uploaded="upl"
         ></component>
       </div>
     </div>
@@ -39,7 +41,11 @@ import UploadFormPdf from "./UploadFormPdf.vue";
 import UploadFormSig from "./UploadFormSig.vue";
 
 export default {
+  emits: ["uploaded"],
   methods: {
+    upl(file) {
+      this.$emit("uploaded", file);
+    },
     click(event) {
       this.setActiveItem(event.target);
     },
@@ -64,10 +70,10 @@ export default {
     UploadFormSig
   },
   mounted() {
-    const firstItem = this.$refs.menu.querySelector(
-      ".upload-form-tabs__menu__item"
+    const activeItem = this.$refs.menu.querySelector(
+      ".upload-form-tabs__menu__item.active"
     );
-    this.moveUnderline(firstItem);
+    this.moveUnderline(activeItem);
   }
 };
 </script>
@@ -77,6 +83,7 @@ export default {
   display: flex;
   justify-content: center;
   position: relative;
+  margin-bottom: 40px;
 }
 .upload-form-tabs__underline {
   position: absolute;

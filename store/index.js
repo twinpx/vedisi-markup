@@ -5,7 +5,7 @@ export const state = () => ({
     error: "",
     controller: null,
     controllerAborted: false,
-    pdfFile: undefined,
+    isDragover: false,
     tabs: [
       {
         name: "PDF",
@@ -16,7 +16,9 @@ export const state = () => ({
             value: "pdf",
             name: "Выберите PDF-файл",
             accept: ".pdf",
-            error: ""
+            error: "",
+            show: true,
+            file: null
           }
         ]
       },
@@ -28,13 +30,17 @@ export const state = () => ({
             value: "file",
             name: "Выберите файл",
             accept: "*",
-            error: ""
+            error: "",
+            show: true,
+            file: null
           },
           {
             value: "sig",
             name: "Загрузите SIG-файл",
-            accept: ".sig, .sgn, .p7s",
-            error: ""
+            accept: ".sig, .sgn, .p7s, .pdf",
+            error: "",
+            show: false,
+            file: null
           }
         ]
       }
@@ -182,17 +188,33 @@ export const state = () => ({
 });
 
 export const mutations = {
+  inverseButtons(state, payload) {
+    state.uploadForm.tabs[payload.tabIndex].buttons.forEach(b => {
+      b.show = !b.show;
+    });
+  },
+  showButton(state, payload) {
+    state.uploadForm.tabs
+      .find(tab => tab.buttons.length > 1)
+      .buttons.forEach(b => {
+        b.show = b.value === payload ? true : false;
+      });
+  },
   changeResult(state, json) {
     state.result = json;
   },
   changeUploadStatus(state, status) {
     state.uploadStatus = status;
   },
+  setUploadFormFile(state, payload) {
+    state.uploadForm.tabs[payload.tabIndex].buttons[payload.buttonIndex].file =
+      payload.value;
+  },
   setUploadFormProp(state, payload) {
     state.uploadForm[payload.prop] = payload.value;
   },
   setUploadFormButtonError(state, payload) {
-    state.uploadForm.tabs[payload.tabIndex].buttons[payload.buttonIndex] =
+    state.uploadForm.tabs[payload.tabIndex].buttons[payload.buttonIndex].error =
       payload.value;
   },
   setUploadFormTabActive(state, payload) {

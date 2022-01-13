@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="upload-form-comfirmation"
-    v-if="$store.state.uploadStatus === 'confirmation'"
-  >
+  <div class="upload-form-comfirmation">
     <div class="upload-form-comfirmation__text">
       Сервис обрабатывает, но не хранит и не передаёт персональные данные.<br />Вы
       даёте своё согласие?
@@ -13,7 +10,7 @@
     </label>
     <button
       class="button button--danger button--middle"
-      @click.prevent="refuse()"
+      @click.prevent="refuse"
     >
       Отменить
     </button>
@@ -38,10 +35,17 @@ export default {
       //back to the main page
       this.$store.commit("changeUploadStatus", "form");
       //clear the file input
-      this.$store.commit("setUploadFormProp", {
-        prop: "pdfFile",
-        value: []
+      this.$store.state.uploadForm.tabs.forEach((tab, tabIndex) => {
+        tab.buttons.forEach((button, buttonIndex) => {
+          this.$store.commit("setUploadFormFile", {
+            tabIndex: tabIndex,
+            buttonIndex: buttonIndex,
+            value: null
+          });
+        });
       });
+      //hide sig
+      this.$store.commit("showButton", "file");
     },
     async sendFile() {
       //create controller

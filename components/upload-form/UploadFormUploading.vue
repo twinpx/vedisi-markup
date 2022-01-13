@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="upload-form-uploading"
-    v-if="$store.state.uploadStatus === 'uploading'"
-  >
+  <div class="upload-form-uploading">
     <div class="upload-form-uploading__preloader"></div>
     <button
       class="button button--gray button--small"

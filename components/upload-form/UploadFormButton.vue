@@ -1,19 +1,19 @@
 <template>
-  <div>
-    {{ keyword }}
+  <div v-show="button.show">
     <input
       type="file"
-      name="pdfFile"
-      id="pdfFile"
+      :name="`${button.value}File`"
+      :id="`${button.value}File`"
       @change="uploadFile"
       ref="pdfFile"
       :accept="button.accept"
     />
     <div class="upload-form-button" v-if="$store.state.uploadStatus === 'form'">
-      <div class="input-file">
+      <div class="input-file" v-if="!$store.state.uploadForm.isDragover">
         <label
-          for="pdfFile"
+          :for="`${button.value}File`"
           class="button button--large"
+          :class="{ 'button--sig': button.value === 'sig' }"
           @click="clickUpload()"
           >{{ button.name }}</label
         >
@@ -21,12 +21,9 @@
 
       <div
         class="upload-form__dragndrop"
-        ref="dragndrop"
-        @dragenter="dragenter()"
-        @drop="drop($event)"
-      >
-        <span>или перетащите его в область</span>
-      </div>
+        v-if="$store.state.uploadForm.isDragover"
+      ></div>
+      <span>или перетащите его в область</span>
 
       <div class="upload-form-control__error" v-text="button.error"></div>
     </div>
@@ -36,62 +33,27 @@
 <script>
 export default {
   name: "UploadFormButton",
-  props: {
-    keyword: String,
-    button: Object
+  data() {
+    return {};
   },
+  props: {
+    button: Object,
+    tabindex: Number,
+    buttonindex: Number
+  },
+  emits: ["uploaded"],
   methods: {
-    drop(event) {
-      console.log(event);
-    },
-    dragenter() {
-      console.log("sdf");
-    },
     clickUpload() {
       if (window.ym) {
         window.ym(this.$store.state.counters.ym, "reachGoal", "CLICK_UPLOAD");
       }
     },
     uploadFile() {
-      this.$store.commit("setUploadFormProp", {
-        prop: "pdfFile",
-        value: this.$refs.pdfFile.files
-      });
-      //if size is acceptable
-      if (this.$store.state.uploadForm.pdfFile[0].size >= 1e7) {
-        this.$store.commit("setUploadFormButtonError", {
-          prop: "error",
-          value:
-            "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт."
-        });
-        return;
-      } else {
-        this.$store.commit("setUploadFormButtonError", {
-          prop: "error",
-          value: ""
-        });
-      }
+      const file = this.$refs.pdfFile.files[0];
 
-      //if the file extention is not pdf
-      /*const filename = this.$store.state.uploadForm.pdfFile[0].name;
-      const lastIndex = filename.lastIndexOf(".");
+      this.$refs.pdfFile.value = null;
 
-      if (filename.substring(lastIndex + 1) !== "pdf") {
-        this.$store.commit("setUploadFormProp", {
-          prop: "error",
-          value:
-            "Сервис поддерживает только проверку файлов PDF."
-        });
-        return;
-      } else {
-        this.$store.commit("setUploadFormProp", {
-          prop: "error",
-          value:
-            "Сервис не поддерживает проверку файлов, размер которых превышает 10 Мбайт."
-        });
-      }*/
-
-      this.$store.commit("changeUploadStatus", "confirmation");
+      this.$emit("uploaded", file);
     }
   }
 };
@@ -117,7 +79,7 @@ export default {
   margin: 0 auto 50px;
 }
 .upload-form__dragndrop {
-  margin: 0 auto 25px;
+  margin: 0 auto 45px;
   background: url("~/assets/icon-dragndrop.svg") no-repeat center top;
   background-size: 64px;
   padding-top: 85px;

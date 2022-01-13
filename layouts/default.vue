@@ -146,6 +146,12 @@ a.copyright {
   background-color: #ff0000;
   color: #fff;
 }
+.button--sig {
+  background-color: #abcbef;
+}
+.button--sig:hover {
+  background-color: #5daeff;
+}
 .button--small {
   height: 40px;
   line-height: 40px;
