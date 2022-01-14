@@ -54,16 +54,27 @@ export default {
         value: new AbortController()
       });
 
+      //get files
+      const files = [];
+      this.$store.state.uploadForm.tabs
+        .find(tab => tab.active)
+        .buttons.forEach(b => {
+          files.push(b.file);
+        });
+
       //check if there are files
-      if (this.$store.state.uploadForm.pdfFile.length == 0) {
+      if (files.length == 0) {
         throw new Error("No file selected");
       }
 
       //upload file and get uuid
       //create form data
       let formData = new FormData();
-      if (this.$store.state.uploadForm.pdfFile.length != 0) {
-        formData.append("pdfFile", this.$store.state.uploadForm.pdfFile[0]);
+      if (files[0]) {
+        formData.append("pdfFile", files[0]);
+      }
+      if (files[1]) {
+        formData.append("sigFile", files[1]);
       }
 
       //response

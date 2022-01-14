@@ -113,7 +113,7 @@ export default {
     min-height: 108px;
   }
   .content-body--form {
-    margin-bottom: 170px;
+    margin-bottom: 200px;
     min-height: 210px;
     position: relative;
   }

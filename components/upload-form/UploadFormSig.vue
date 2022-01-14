@@ -120,4 +120,10 @@ export default {
   margin-right: 10px;
   flex-shrink: 0;
 }
+@media (max-width: 767px) {
+  .upload-form__filename-block {
+    margin-top: 10px;
+    margin-bottom: 13px;
+  }
+}
 </style>

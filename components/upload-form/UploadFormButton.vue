@@ -23,7 +23,10 @@
         class="upload-form__dragndrop"
         v-if="$store.state.uploadForm.isDragover"
       ></div>
-      <span>или перетащите его в область</span>
+
+      <span class="upload-form__dragndrop-text"
+        >или перетащите его в область</span
+      >
 
       <div class="upload-form-control__error" v-text="button.error"></div>
     </div>
@@ -88,7 +91,8 @@ export default {
   .upload-form-control__error {
     height: 32px;
   }
-  .upload-form__dragndrop {
+  .upload-form__dragndrop,
+  .upload-form__dragndrop-text {
     display: none;
   }
   .input-file label.button {

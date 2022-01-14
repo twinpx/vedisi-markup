@@ -124,4 +124,10 @@ export default {
 .upload-form-tabs__menu__item:hover {
   opacity: 0.7;
 }
+@media (max-width: 767px) {
+  .upload-form-tabs__menu {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
 </style>

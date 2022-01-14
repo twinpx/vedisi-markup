@@ -1,22 +1,48 @@
 <template>
   <div class="signature-result-info">
-    <div class="signature-result-info__left" v-if="$store.state.result.PDF">
-      <span
-        class="signature-result-info__filename"
+    <div>
+      <div
+        class="signature-result-info__left"
         v-if="$store.state.result.PDF.filename"
-        ><i></i
-        ><span
-          >{{ $store.state.result.PDF.filename }}<br /><span
-            class="signature-result-info__filename__md5"
-            >Контрольная сумма MD5: {{ $store.state.result.PDF.MD5 }}</span
+      >
+        <span
+          class="signature-result-info__filename"
+          v-if="$store.state.result.PDF.filename"
+          ><i></i
+          ><span
+            >{{ $store.state.result.PDF.filename }}<br /><span
+              class="signature-result-info__filename__md5"
+              >Контрольная сумма MD5: {{ $store.state.result.PDF.MD5 }}</span
+            ></span
           ></span
-        ></span
+        >
+        <span
+          class="signature-result-info__md5"
+          v-if="$store.state.result.PDF.MD5"
+          >Контрольная сумма MD5: {{ $store.state.result.PDF.MD5 }}</span
+        >
+      </div>
+      <div
+        class="signature-result-info__left"
+        v-if="$store.state.result.SIG.filename"
       >
-      <span
-        class="signature-result-info__md5"
-        v-if="$store.state.result.PDF.MD5"
-        >Контрольная сумма MD5: {{ $store.state.result.PDF.MD5 }}</span
-      >
+        <span
+          class="signature-result-info__filename"
+          v-if="$store.state.result.SIG.filename"
+          ><i></i
+          ><span
+            >{{ $store.state.result.SIG.filename }}<br /><span
+              class="signature-result-info__filename__md5"
+              >Контрольная сумма MD5: {{ $store.state.result.SIG.MD5 }}</span
+            ></span
+          ></span
+        >
+        <span
+          class="signature-result-info__md5"
+          v-if="$store.state.result.SIG.MD5"
+          >Контрольная сумма MD5: {{ $store.state.result.SIG.MD5 }}</span
+        >
+      </div>
     </div>
     <div class="signature-result-info__right">
       <button
@@ -90,12 +116,15 @@ export default {
     font-size: 0.55rem;
     margin-left: 0;
     margin-right: 0;
+    height: auto;
   }
   .signature-result-info__md5 {
     display: none;
   }
   .signature-result-info__filename {
     width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
   .signature-result-info__filename__md5 {
     display: inline;
