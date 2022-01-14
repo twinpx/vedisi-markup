@@ -85,6 +85,8 @@ export default {
 .upload-form__filename-block {
   display: flex;
   width: 100%;
+  height: 40px;
+  margin-bottom: 23px;
 }
 .upload-form__filename-block .button {
   width: 120px;

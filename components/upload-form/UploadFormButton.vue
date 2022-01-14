@@ -61,10 +61,10 @@ export default {
 
 <style>
 .upload-form-control__error {
-  margin-bottom: 50px;
   font-size: 0.9rem;
   color: #e43d40;
   min-height: 16px;
+  margin-top: 10px;
 }
 .upload-form-control span {
   font-size: 0.9rem;
@@ -79,14 +79,13 @@ export default {
   margin: 0 auto 50px;
 }
 .upload-form__dragndrop {
-  margin: 0 auto 45px;
-  background: url("~/assets/icon-dragndrop.svg") no-repeat center top;
+  margin: 0 auto 30px;
+  background: url("~/assets/icon-dragndrop.svg") no-repeat center 15px;
   background-size: 64px;
-  padding-top: 85px;
+  padding-top: 100px;
 }
 @media (max-width: 767px) {
   .upload-form-control__error {
-    margin-bottom: 1rem;
     height: 32px;
   }
   .upload-form__dragndrop {

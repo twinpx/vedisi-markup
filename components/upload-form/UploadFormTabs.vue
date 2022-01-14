@@ -1,6 +1,6 @@
 <template>
   <div class="upload-form-tabs">
-    <div class="upload-form-tabs__menu" ref="menu">
+    <div class="upload-form-tabs__menu" ref="menu" v-show="isVisible">
       <div class="upload-form-tabs__underline" ref="underline"></div>
       <div
         class="upload-form-tabs__menu__item"
@@ -41,6 +41,13 @@ import UploadFormPdf from "./UploadFormPdf.vue";
 import UploadFormSig from "./UploadFormSig.vue";
 
 export default {
+  computed: {
+    isVisible() {
+      return !this.$store.state.uploadForm.tabs.some(tab => {
+        return tab.buttons.some(b => b.file);
+      });
+    }
+  },
   emits: ["uploaded"],
   methods: {
     upl(file) {
