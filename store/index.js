@@ -37,7 +37,7 @@ export const state = () => ({
           {
             value: "sig",
             name: "Загрузите SIG-файл",
-            accept: ".sig, .sgn, .p7s, .pdf",
+            accept: ".sig, .sgn, .p7s",
             error: "",
             show: false,
             file: null
