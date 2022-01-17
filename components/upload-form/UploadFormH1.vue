@@ -2,7 +2,7 @@
   <h1
     v-text="
       $store.state.uploadStatus === 'form'
-        ? 'Проверка квалифицированной электронной подписи PDF-документа'
+        ? 'Проверка квалифицированной электронной подписи документов'
         : $store.state.uploadStatus === 'confirmation'
         ? 'Согласитесь с условиями сервиса'
         : $store.state.uploadStatus === 'uploading'

@@ -76,14 +76,6 @@ export const state = () => ({
       }
     ],
     dataType: [
-      /*{
-        code: "fromPDF",
-        text: "Нахождение подписи:",
-        value: {
-          true: "Внутри PDF-документа",
-          false: "В SIG-файле"
-        }
-      },*/
       {
         code: "type",
         text: "Тип подписи"
@@ -98,6 +90,14 @@ export const state = () => ({
         value: {
           true: "Да",
           false: "Нет"
+        }
+      },
+      {
+        code: "fromPDF",
+        text: "Нахождение подписи",
+        value: {
+          true: "Внутри PDF-документа",
+          false: "В SIG-файле"
         }
       },
       {

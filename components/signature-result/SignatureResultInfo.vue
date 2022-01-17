@@ -1,8 +1,8 @@
 <template>
   <div class="signature-result-info">
-    <div>
+    <div class="signature-result-info__left">
       <div
-        class="signature-result-info__left"
+        class="signature-result-info__item"
         v-if="$store.state.result.PDF.filename"
       >
         <span
@@ -23,7 +23,7 @@
         >
       </div>
       <div
-        class="signature-result-info__left"
+        class="signature-result-info__item"
         v-if="$store.state.result.SIG.filename"
       >
         <span
@@ -72,14 +72,15 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 0.7rem;
-  margin: 20px 40px 35px;
-  height: 40px;
+  margin: 20px 40px 25px;
+  min-height: 40px;
+  height: auto;
 }
 .signature-result-info__filename {
   display: flex;
   align-items: center;
-  margin-right: 44px;
-  flex-shrink: 0;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 .signature-result-info__filename i {
   width: 32px;
@@ -87,6 +88,10 @@ export default {
   background: url("~/assets/icon-filename.svg") no-repeat center;
   background-size: contain;
   margin-right: 10px;
+}
+.signature-result-info__filename > span {
+  max-width: calc(100% - 42px);
+  word-break: break-word;
 }
 .signature-result-info__filename__md5 {
   display: none;
@@ -96,8 +101,14 @@ export default {
   word-wrap: break-word;
 }
 .signature-result-info__left {
+  margin-right: 44px;
+  width: calc(100% - 42px);
+}
+.signature-result-info__item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .signature-result-info .button {
@@ -116,7 +127,6 @@ export default {
     font-size: 0.55rem;
     margin-left: 0;
     margin-right: 0;
-    height: auto;
   }
   .signature-result-info__md5 {
     display: none;
@@ -124,7 +134,6 @@ export default {
   .signature-result-info__filename {
     width: 100%;
     margin-right: 0;
-    margin-bottom: 10px;
   }
   .signature-result-info__filename__md5 {
     display: inline;

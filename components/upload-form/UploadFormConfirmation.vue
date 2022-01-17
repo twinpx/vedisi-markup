@@ -90,6 +90,19 @@ export default {
           body: formData
         });
         result = await response.json();
+
+        //reset files
+        this.$store.state.uploadForm.tabs.forEach((tab, tabIndex) => {
+          tab.buttons.forEach((button, buttonIndex) => {
+            if (button.file) {
+              this.$store.commit("setUploadFormFile", {
+                tabIndex: tabIndex,
+                buttonIndex: buttonIndex,
+                value: null
+              });
+            }
+          });
+        });
       } catch (err) {
         if (!this.$store.state.uploadForm.controllerAborted) {
           this.error = "Произошла ошибка, попробуйте снова.";
