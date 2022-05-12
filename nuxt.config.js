@@ -135,21 +135,23 @@ export default {
       "@nuxtjs/yandex-metrika",
       {
         id: "81665320",
-        webvisor: true
-        // clickmap:true,
+        // webvisor: true,
+        clickmap: true,
         // useCDN:false,
-        // trackLinks:true,
-        // accurateTrackBounce:true,
+        trackLinks: true,
+        accurateTrackBounce: true
       }
     ]
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {splitChunks: {
+  build: {
+    splitChunks: {
       layouts: false,
       pages: false,
       commons: false
-    }},
+    }
+  },
 
   router: {
     base: "/"
